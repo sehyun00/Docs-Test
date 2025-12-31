@@ -1,591 +1,614 @@
-# 배포 및 CI/CD
+# Stock-Keeper - 배포 전략
+
+> Stock-Keeper 프로젝트의 배포 환경 구성, 배포 전략, CI/CD 파이프라인, 롤백 및 장애 대응 프로세스를 다룹니다.
+
+---
 
 ## 요약 ⚡
 
-- **CI/CD**: GitHub Actions
-- **백엔드**: AWS EC2 + 자동 배포
-- **프론트엔드**: Expo EAS Build + TestFlight/Google Play
-- **배포 주기**: Phase 1 주간, Phase 2+ 2주
-- **환경**: Dev (develop) → Staging (release) → Production (main)
+개발/스테이징/프로덕션 3개 환경으로 구성하며, Phase 1에서는 수동 배포로 시작하고 Phase 2에서 GitHub Actions 자동 배포, Phase 3에서 Blue-Green 배포를 목표로 합니다. AWS EC2 + RDS를 사용하며, 모바일 앱은 TestFlight/Firebase App Distribution으로 베타 배포 후 앱 스토어에 정식 출시합니다. CloudWatch로 로그를 관리하고 Sentry/Firebase Crashlytics로 에러를 추적합니다.
 
 ---
 
-## Phase 1 (현재)
+## 배포 환경 구성
 
-### 배포 환경
+### 1. 개발 환경 (Development)
 
-```
-┌─────────────┐
-│   develop    │ → Dev 환경 (dev-api.stock-keeper.com)
-└──────┬──────┘
-       │
-       v
-┌─────────────┐
-│   release    │ → Staging 환경 (staging-api.stock-keeper.com)
-└──────┬──────┘
-       │
-       v
-┌─────────────┐
-│     main     │ → Production 환경 (api.stock-keeper.com)
-└─────────────┘
-```
+**`[P1]` Phase 1부터 사용**
 
-### 환경별 설정
+- **용도**: 개발자 로컬 테스트
+- **서버**: 로컬 머신
+- **DB**: 로컬 MySQL 또는 Docker 컨테이너
+- **API**: 한투 API Sandbox (테스트 환경)
+- **도메인**: localhost:8080
+- **특징**:
+  - 개발자별 독립적인 환경
+  - Hot Reload 지원
+  - 디버그 모드 활성화
 
-| 환경 | 브랜치 | 서버 | DB | 배포 트리거 |
-|------|--------|------|----|-----------|
-| **Dev** | `develop` | AWS EC2 t3.micro | AWS RDS dev | 커밋 푸시 |
-| **Staging** | `release` | AWS EC2 t3.small | AWS RDS staging | PR 머지 → release |
-| **Production** | `main` | AWS EC2 t3.small | AWS RDS prod | 태그 발행 (v1.0.0) |
+### 2. 스테이징 환경 (Staging)
+
+**`[P2]` Phase 2부터 구축**
+
+- **용도**: QA 테스트, 배포 전 최종 검증
+- **서버**: AWS EC2 t3.micro 1대
+- **DB**: AWS RDS MySQL (개발용 인스턴스)
+- **도메인**: staging-api.stock-keeper.com
+- **특징**:
+  - 프로덕션과 동일한 환경 구성
+  - 테스트 데이터 사용
+  - 자동 배포 테스트
+  - 성능 모니터링 연습
+
+### 3. 프로덕션 환경 (Production)
+
+**`[P1]` Phase 1 베타 출시 시 구축**
+
+- **용도**: 실제 사용자 서비스
+- **서버**: AWS EC2 t3.small 이상 (Phase 1), Auto Scaling (Phase 2+)
+- **DB**: AWS RDS MySQL (프로덕션 인스턴스)
+- **도메인**: api.stock-keeper.com
+- **특징**:
+  - 실제 사용자 데이터
+  - 자동 백업 활성화 (일일)
+  - 모니터링 강화
+  - SSL/TLS 인증서 적용
+  - 로드 밸런서 (Phase 2+)
+
+### 환경별 비교표
+
+| 항목 | 개발 | 스테이징 | 프로덕션 |
+|------|------|----------|----------|
+| **서버** | 로컬 | EC2 t3.micro | EC2 t3.small+ |
+| **DB** | 로컬 MySQL | RDS (dev) | RDS (prod) |
+| **백업** | ❌ | ✅ (주간) | ✅ (일일) |
+| **모니터링** | ❌ | ✅ | ✅✅ |
+| **SSL** | ❌ | ✅ | ✅ |
+| **Auto Scaling** | ❌ | ❌ | ✅ (P2+) |
 
 ---
 
-## 백엔드 배포
+## Phase 1: 배포 전략
 
-### CI/CD 파이프라인
+### Backend 배포
 
-#### GitHub Actions Workflow
+**배포 방식**: 수동 배포 (SSH + Git Pull)
 
-**파일**: `.github/workflows/backend-deploy.yml`
+**배포 절차**:
+
+1. **로컬 테스트**
+   ```bash
+   ./gradlew test
+   ./gradlew build
+   ```
+
+2. **코드 푸시**
+   ```bash
+   git push origin main
+   ```
+
+3. **서버 접속 및 배포**
+   ```bash
+   ssh user@api.stock-keeper.com
+   cd /app/stock-keeper
+   git pull origin main
+   ./gradlew build
+   sudo systemctl restart stock-keeper
+   ```
+
+4. **헬스 체크**
+   ```bash
+   curl https://api.stock-keeper.com/health
+   ```
+
+**배포 시간**: 약 5-10분
+
+### Frontend (모바일 앱) 배포
+
+#### 내부 테스트 배포
+
+**iOS**: TestFlight
+```bash
+# Expo 빌드
+eas build --platform ios
+
+# TestFlight 업로드
+eas submit --platform ios
+```
+
+**Android**: Firebase App Distribution
+```bash
+# APK 빌드
+eas build --platform android
+
+# Firebase 배포
+firebase appdistribution:distribute app-release.apk \
+  --app 1:123456789:android:abcd1234 \
+  --groups "testers"
+```
+
+#### 정식 출시
+
+**iOS**: App Store
+- App Store Connect에서 메타데이터 작성
+- 스크린샷 및 설명 업로드
+- 심사 제출 (승인까지 1-3일 소요)
+
+**Android**: Google Play
+- Google Play Console에서 메타데이터 작성
+- 스크린샷 및 설명 업로드
+- 내부 테스트 → 비공개 테스트 → 공개 출시
+
+---
+
+## Phase 2: 자동 배포
+
+### GitHub Actions 자동 배포
+
+**목표**: Zero-downtime 배포
+
+**워크플로우**:
 
 ```yaml
-name: Backend Deploy
+name: Deploy to Production
 
 on:
   push:
-    branches: [main, develop]
-    tags:
-      - 'v*'
+    branches: [main]
+    paths:
+      - 'backend/**'
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
-    
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
       
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
           java-version: '17'
-          distribution: 'adopt'
       
-      - name: Build with Gradle
-        run: ./gradlew build -x test
-      
-      - name: Run tests
-        run: ./gradlew test
+      - name: Run Tests
+        run: |
+          cd backend
+          ./gradlew test
       
       - name: Build JAR
-        run: ./gradlew bootJar
-      
-      - name: Upload artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: app-jar
-          path: build/libs/*.jar
-  
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    
-    steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: app-jar
+        run: |
+          cd backend
+          ./gradlew bootJar
       
       - name: Deploy to EC2
         env:
-          EC2_HOST: ${{ secrets.EC2_HOST }}
-          EC2_USER: ${{ secrets.EC2_USER }}
-          EC2_KEY: ${{ secrets.EC2_PRIVATE_KEY }}
+          PRIVATE_KEY: ${{ secrets.EC2_PRIVATE_KEY }}
+          HOST: ${{ secrets.EC2_HOST }}
+          USER: ${{ secrets.EC2_USER }}
         run: |
-          echo "$EC2_KEY" > private_key.pem
+          echo "$PRIVATE_KEY" > private_key.pem
           chmod 600 private_key.pem
           
-          scp -i private_key.pem -o StrictHostKeyChecking=no \
-            *.jar $EC2_USER@$EC2_HOST:/app/
+          scp -i private_key.pem backend/build/libs/*.jar $USER@$HOST:/app/
           
-          ssh -i private_key.pem -o StrictHostKeyChecking=no \
-            $EC2_USER@$EC2_HOST \
-            'sudo systemctl restart stock-keeper-api'
+          ssh -i private_key.pem $USER@$HOST << 'EOF'
+            sudo systemctl stop stock-keeper
+            sudo mv /app/*.jar /app/stock-keeper.jar
+            sudo systemctl start stock-keeper
+            sleep 5
+            curl http://localhost:8080/health
+          EOF
       
-      - name: Health check
-        run: |
-          sleep 10
-          curl -f https://api.stock-keeper.com/health || exit 1
+      - name: Notify Slack
+        if: always()
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          webhook_url: ${{ secrets.SLACK_WEBHOOK }}
 ```
 
-### EC2 서버 설정
+**배포 시간**: 약 3-5분
 
-#### systemd 서비스 파일
+### OTA 업데이트 (Over-The-Air)
 
-**파일**: `/etc/systemd/system/stock-keeper-api.service`
+**도구**: Expo Updates
 
-```ini
-[Unit]
-Description=Stock-Keeper API
-After=network.target
-
-[Service]
-Type=simple
-User=ec2-user
-WorkingDirectory=/app
-ExecStart=/usr/bin/java -jar /app/stock-keeper-api.jar
-Restart=on-failure
-RestartSec=10
-
-Environment="SPRING_PROFILES_ACTIVE=prod"
-Environment="JAVA_OPTS=-Xms512m -Xmx1024m"
-
-[Install]
-WantedBy=multi-user.target
-```
-
-#### 서비스 관리 명령어
+**적용 대상**: 긴급 핫픽스, JS 코드 변경
 
 ```bash
-# 서비스 시작
-sudo systemctl start stock-keeper-api
+# 업데이트 배포
+eas update --branch production --message "버그 수정"
 
-# 서비스 중지
-sudo systemctl stop stock-keeper-api
-
-# 서비스 재시작
-sudo systemctl restart stock-keeper-api
-
-# 서비스 상태 확인
-sudo systemctl status stock-keeper-api
-
-# 로그 확인
-sudo journalctl -u stock-keeper-api -f
+# 사용자 앱 자동 업데이트 (앱 재시작 시)
 ```
 
-### 배포 절차
+**장점**:
+- 앱 스토어 심사 불필요
+- 즉시 배포 가능 (5분 이내)
+- 점진적 롤아웃 가능
 
-#### 자동 배포 (GitHub Actions)
-
-1. **코드 푸시**
-   ```bash
-   git add .
-   git commit -m "feat: Add new feature"
-   git push origin develop  # Dev 환경
-   ```
-
-2. **빌드 & 테스트**
-   - GitHub Actions가 자동으로 빌드
-   - 단위/통합 테스트 실행
-
-3. **배포**
-   - JAR 파일 EC2에 업로드
-   - 서비스 재시작
-
-4. **헬스 체크**
-   - `/health` 엔드포인트 호출
-   - 실패 시 롤백
-
-#### 수동 배포 (비상 시)
-
-```bash
-# 1. 빌드
-./gradlew bootJar
-
-# 2. 서버에 업로드
-scp -i key.pem build/libs/*.jar ec2-user@HOST:/app/
-
-# 3. SSH 접속
-ssh -i key.pem ec2-user@HOST
-
-# 4. 서비스 재시작
-sudo systemctl restart stock-keeper-api
-
-# 5. 로그 확인
-sudo journalctl -u stock-keeper-api -f
-```
-
-### 롤백 전략
-
-#### 빠른 롤백
-
-```bash
-# 이전 버전으로 복구
-scp -i key.pem backup/stock-keeper-api-v1.0.0.jar ec2-user@HOST:/app/stock-keeper-api.jar
-sudo systemctl restart stock-keeper-api
-```
-
-#### Git 롤백
-
-```bash
-# 이전 커밋으로 복구
-git revert <commit-hash>
-git push origin main
-
-# GitHub Actions가 자동으로 이전 버전 배포
-```
+**제한사항**:
+- 네이티브 코드 변경 불가
+- JS/TypeScript 코드만 업데이트 가능
 
 ---
 
-## 프론트엔드 배포
+## Phase 3: Blue-Green 배포
 
-### Expo EAS Build
+### 배포 전략
 
-#### 초기 설정
+**목표**: 무중단 배포 (Zero-downtime)
 
+**구성**:
+- **Blue 환경**: 현재 운영 중인 버전
+- **Green 환경**: 새 버전 배포 환경
+- **로드 밸런서**: 트래픽 전환
+
+**배포 절차**:
+
+1. **Green 환경에 새 버전 배포**
+   - EC2 인스턴스 시작
+   - 새 버전 애플리케이션 배포
+   - 헬스 체크 통과 확인
+
+2. **트래픽 전환**
+   - ALB에서 Green 환경으로 트래픽 전환
+   - 점진적 전환 가능 (10% → 50% → 100%)
+
+3. **모니터링**
+   - 에러율, 응답 시간 모니터링
+   - 문제 발생 시 즉시 Blue로 롤백
+
+4. **Blue 환경 종료**
+   - Green 환경이 안정적이면 Blue 종료
+
+### Canary 배포 (선택적)
+
+**적용 시점**: Phase 3 후반
+
+**전략**:
+- 새 버전을 5% 사용자에게만 배포
+- 문제 없으면 점진적으로 확대 (10% → 25% → 50% → 100%)
+- 에러율 증가 시 자동 롤백
+
+---
+
+## 배포 체크리스트
+
+### 배포 전
+
+- [ ] 모든 테스트 통과 확인 (단위/통합/E2E)
+- [ ] 코드 리뷰 완료
+- [ ] DB 마이그레이션 스크립트 준비 (필요시)
+- [ ] 환경 변수 확인 (API Key, Secret)
+- [ ] 프로덕션 DB 백업 완료
+- [ ] 배포 공지 (사용자, 팀원)
+- [ ] 롤백 계획 수립
+
+### 배포 중
+
+- [ ] 배포 로그 실시간 모니터링
+- [ ] 헬스 체크 API 응답 확인
+- [ ] 에러율 모니터링
+- [ ] 응답 시간 모니터링
+
+### 배포 후
+
+- [ ] 주요 기능 동작 확인 (Smoke Test)
+- [ ] 에러 로그 확인
+- [ ] 사용자 피드백 모니터링
+- [ ] 배포 결과 팀 공유
+- [ ] 배포 문서 업데이트
+
+---
+
+## 롤백 전략
+
+### Backend 롤백
+
+**방법 1: Git 롤백**
 ```bash
-# EAS CLI 설치
-npm install -g eas-cli
-
-# EAS 프로젝트 초기화
-eas init
-
-# EAS 빌드 환경 설정
-eas build:configure
+# 이전 커밋으로 롤백
+ssh user@server
+cd /app/stock-keeper
+git reset --hard <previous-commit-hash>
+./gradlew build
+sudo systemctl restart stock-keeper
 ```
 
-#### eas.json 설정
+**방법 2: 이전 JAR 파일 복원**
+```bash
+ssh user@server
+cd /app
+sudo mv stock-keeper-backup.jar stock-keeper.jar
+sudo systemctl restart stock-keeper
+```
 
-**파일**: `eas.json`
+**롤백 시간**: 약 3-5분
 
-```json
-{
-  "build": {
-    "development": {
-      "developmentClient": true,
-      "distribution": "internal",
-      "env": {
-        "API_URL": "https://dev-api.stock-keeper.com"
-      }
-    },
-    "preview": {
-      "distribution": "internal",
-      "env": {
-        "API_URL": "https://staging-api.stock-keeper.com"
-      }
-    },
-    "production": {
-      "env": {
-        "API_URL": "https://api.stock-keeper.com"
-      }
-    }
-  },
-  "submit": {
-    "production": {
-      "ios": {
-        "appleId": "your-apple-id@email.com",
-        "ascAppId": "1234567890",
-        "appleTeamId": "ABCD1234"
-      },
-      "android": {
-        "serviceAccountKeyPath": "./google-service-account.json",
-        "track": "production"
-      }
-    }
+### Frontend 롤백
+
+**앱 스토어**: 이전 버전 재배포
+- 승인 필요 (1-3일 소요)
+- 긴급 상황에는 OTA 업데이트 사용 권장
+
+**OTA 업데이트**: 즉시 롤백 가능
+```bash
+# 이전 버전으로 롤백
+eas update --branch production --message "긴급 롤백"
+```
+
+### DB 롤백
+
+**방법**: Point-in-Time Recovery (AWS RDS)
+
+```bash
+# AWS CLI로 특정 시점으로 복원
+aws rds restore-db-instance-to-point-in-time \
+  --source-db-instance-identifier stock-keeper-prod \
+  --target-db-instance-identifier stock-keeper-prod-restored \
+  --restore-time 2026-01-15T10:00:00Z
+```
+
+**주의사항**:
+- DB 롤백은 최후의 수단
+- 새 인스턴스 생성 후 연결 변경 필요
+- 롤백 이후 데이터 손실 가능성
+
+---
+
+## 모니터링 및 로그 관리
+
+### 로그 수집
+
+**Backend 로그**:
+
+- **로그 레벨**: ERROR, WARN, INFO, DEBUG
+- **로그 포맷**: JSON
+  ```json
+  {
+    "timestamp": "2026-01-15T10:30:00Z",
+    "level": "ERROR",
+    "message": "Failed to fetch stock price",
+    "userId": "user123",
+    "requestId": "req-abc-123",
+    "stackTrace": "..."
   }
-}
-```
+  ```
+- **저장 위치**: AWS CloudWatch Logs
+- **보관 기간**: 30일 (Phase 1), 90일 (Phase 2+)
 
-### 배포 절차
+**Frontend 로그**:
 
-#### iOS (TestFlight)
+- **크래시 리포트**: Firebase Crashlytics
+- **에러 로그**: Sentry (Phase 2+)
+- **사용자 행동 로그**: Firebase Analytics
 
-1. **빌드**
-   ```bash
-   # Preview 빌드 (내부 테스트)
-   eas build --platform ios --profile preview
-   
-   # Production 빌드
-   eas build --platform ios --profile production
-   ```
+### 에러 추적
 
-2. **TestFlight 업로드**
-   ```bash
-   eas submit --platform ios --latest
-   ```
+**도구**: Firebase Crashlytics (Phase 1), Sentry (Phase 2+)
 
-3. **베타 테스터 초대**
-   - App Store Connect에서 테스터 추가
-   - TestFlight 링크 공유
+**알림 설정**:
 
-4. **검토 후 출시**
-   - App Store 심사 제출
-   - 승인 후 출시
+- **크리티컬 에러**: 즉시 Slack 알림
+  - 500 에러
+  - DB 연결 실패
+  - API 호출 실패
 
-#### Android (Google Play)
+- **일반 에러**: 일일 요약 리포트
+  - 4xx 에러
+  - 경고 로그
 
-1. **빌드**
-   ```bash
-   # Preview 빌드 (내부 테스트)
-   eas build --platform android --profile preview
-   
-   # Production 빌드
-   eas build --platform android --profile production
-   ```
+### 성능 모니터링
 
-2. **Google Play Console 업로드**
-   ```bash
-   eas submit --platform android --latest
-   ```
+**도구**:
+- **Phase 1**: AWS CloudWatch
+- **Phase 2**: New Relic (선택적)
+- **Phase 3**: DataDog 또는 Prometheus + Grafana
 
-3. **내부 테스트**
-   - Google Play Console에서 테스터 추가
-   - 내부 테스트 트랙으로 배포
+**모니터링 지표**:
 
-4. **정식 출시**
-   - 프로덕션 트랙으로 승격
-   - 출시
+| 지표 | 목표 | 알림 임계값 |
+|------|------|-------------|
+| **API 응답 시간 (P95)** | 2초 이내 | 3초 초과 |
+| **에러율** | 1% 이하 | 5% 초과 |
+| **CPU 사용률** | 70% 이하 | 80% 초과 |
+| **메모리 사용률** | 70% 이하 | 85% 초과 |
+| **DB 연결 수** | 80% 이하 | 90% 초과 |
 
-### GitHub Actions (Mobile)
+### 대시보드
 
-**파일**: `.github/workflows/mobile-build.yml`
+**Phase 1**: CloudWatch 기본 대시보드
+- CPU, 메모리, 디스크 사용률
+- API 요청 수, 에러율
 
-```yaml
-name: Mobile Build
-
-on:
-  push:
-    branches: [main, develop]
-    tags:
-      - 'mobile-v*'
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-      
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-      
-      - name: Install dependencies
-        run: npm ci
-      
-      - name: Run tests
-        run: npm test
-      
-      - name: Setup Expo
-        uses: expo/expo-github-action@v8
-        with:
-          expo-version: latest
-          token: ${{ secrets.EXPO_TOKEN }}
-      
-      - name: Build iOS (Preview)
-        if: github.ref == 'refs/heads/develop'
-        run: eas build --platform ios --profile preview --non-interactive
-      
-      - name: Build Android (Preview)
-        if: github.ref == 'refs/heads/develop'
-        run: eas build --platform android --profile preview --non-interactive
-      
-      - name: Build iOS (Production)
-        if: startsWith(github.ref, 'refs/tags/mobile-v')
-        run: eas build --platform ios --profile production --non-interactive
-      
-      - name: Build Android (Production)
-        if: startsWith(github.ref, 'refs/tags/mobile-v')
-        run: eas build --platform android --profile production --non-interactive
-```
+**Phase 2**: Grafana 커스텀 대시보드
+- 실시간 트래픽 그래프
+- 응답 시간 분포 (P50, P95, P99)
+- 에러 로그 집계
 
 ---
 
-## 버전 관리
+## 장애 대응 프로세스
 
-### 시맨틱 버전닝 (Semantic Versioning)
+### 장애 감지
 
-**형식**: `vMAJOR.MINOR.PATCH`
+**감지 방법**:
+1. 모니터링 알림 (CloudWatch, Sentry)
+2. 헬스 체크 실패
+3. 사용자 신고
 
-- **MAJOR**: 호환성이 깨지는 변경 (v2.0.0)
-- **MINOR**: 호환성을 유지하는 기능 추가 (v1.1.0)
-- **PATCH**: 버그 수정 (v1.0.1)
+**감지 목표**: 5분 이내
 
-**예시**
-- `v1.0.0`: Phase 1 MVP 출시
-- `v1.1.0`: Phase 2 포트폴리오 공유 기능 추가
-- `v1.1.1`: 버그 수정
-- `v2.0.0`: AI 추천 기능 추가 (Phase 3)
+### 긴급 조치
 
-### Git 태그
+**1단계: 장애 원인 파악** (5분)
+- CloudWatch 로그 확인
+- 에러 추적 도구 확인
+- 최근 배포 이력 확인
+
+**2단계: 즉시 대응** (10분)
+- 가능하면 즉시 롤백
+- 불가능하면 서비스 일시 중단
+- 사용자 공지 (앱 내 공지, 푸시 알림)
+
+**3단계: 복구** (30분 이내 목표)
+- 핫픽스 배포
+- 또는 이전 버전으로 롤백
+- 서비스 재개
+
+### 사후 처리
+
+**근본 원인 분석 (RCA)**:
+- 장애 발생 시간 및 기간
+- 장애 원인 상세 분석
+- 영향 받은 사용자 수
+- 재발 방지 대책
+
+**재발 방지**:
+- 모니터링 강화
+- 테스트 케이스 추가
+- 코드 리뷰 프로세스 개선
+
+### 장애 대응 시간 목표
+
+| 단계 | 목표 시간 |
+|------|----------|
+| **감지** | 5분 이내 |
+| **대응 시작** | 15분 이내 |
+| **복구 완료** | 1시간 이내 |
+
+---
+
+## 인프라 구성
+
+### Phase 1: 최소 구성
+
+```
+┌─────────────────┐
+│   사용자 앱      │
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│   AWS EC2       │
+│ (t3.small)      │
+│  Spring Boot    │
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│   AWS RDS       │
+│   MySQL         │
+└─────────────────┘
+```
+
+### Phase 2: 확장 구성
+
+```
+┌─────────────────┐
+│   사용자 앱      │
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│  CloudFront     │
+│  (CDN)          │
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│   ALB           │
+│ (Load Balancer) │
+└────────┬────────┘
+         │
+    ┌────┴────┐
+    ▼         ▼
+┌───────┐ ┌───────┐
+│  EC2  │ │  EC2  │
+└───┬───┘ └───┬───┘
+    │         │
+    └────┬────┘
+         ▼
+┌─────────────────┐
+│   AWS RDS       │
+│   MySQL         │
+└─────────────────┘
+         │
+         ▼
+┌─────────────────┐
+│   ElastiCache   │
+│   Redis         │
+└─────────────────┘
+```
+
+### Phase 3: 고가용성 구성
+
+- **Multi-AZ 배포**: 가용 영역 장애 대응
+- **Auto Scaling**: 트래픽 증가 시 자동 확장
+- **읽기 전용 복제본**: 읽기 성능 향상
+
+---
+
+## 보안 설정
+
+### SSL/TLS 인증서
+
+**도구**: AWS Certificate Manager (ACM)
 
 ```bash
-# 태그 생성
-git tag -a v1.0.0 -m "Release v1.0.0: Phase 1 MVP"
-
-# 태그 푸시
-git push origin v1.0.0
-
-# 태그 목록 확인
-git tag -l
+# Let's Encrypt 인증서 발급 (무료)
+sudo certbot --nginx -d api.stock-keeper.com
 ```
 
-### 백엔드 vs 프론트엔드 버전
+### 환경 변수 관리
 
-- **백엔드**: `v1.0.0` (동일)
-- **프론트엔드**: `mobile-v1.0.0` (접두사 추가)
+**도구**: AWS Secrets Manager 또는 Parameter Store
 
----
+**민감 정보**:
+- DB 비밀번호
+- JWT Secret
+- 한투 API Key/Secret
+- Google OAuth Client Secret
 
-## 모니터링 및 알림
-
-### 배포 후 확인 사항
-
-| 항목 | 확인 방법 | 목표 |
-|------|----------|------|
-| 서버 구동 | `systemctl status` | 정상 구동 |
-| API 응답 | `/health` 엔드포인트 | 200 OK |
-| 로그 오류 | CloudWatch Logs | ERROR 0건 |
-| CPU/메모리 | CloudWatch Metrics | < 70% |
-| 데이터베이스 | RDS Metrics | 정상 연결 |
-
-### Slack 알림 연동
-
-**GitHub Actions Slack Notification**
-
+**GitHub Secrets 설정**:
 ```yaml
-- name: Notify Slack
-  if: always()
-  uses: 8398a7/action-slack@v3
-  with:
-    status: ${{ job.status }}
-    text: 'Deploy to Production ${{ job.status }}'
-    webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+# .github/workflows/deploy.yml
+env:
+  DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+  JWT_SECRET: ${{ secrets.JWT_SECRET }}
 ```
 
-**알림 내용**
-- ✅ 배포 성공
-- ❌ 배포 실패
-- ⚠️ 헬스 체크 실패
+### 방화벽 설정
 
----
-
-## 배포 일정
-
-### Phase 1 (MVP)
-
-| 주차 | 배포 항목 | 환경 |
-|------|-----------|------|
-| 1-2주 | 개발 환경 구축 | Dev |
-| 3-11주 | 주간 배포 | Dev |
-| 12주 | Staging 배포 | Staging |
-| 12주 | Production 배포 | Production |
-
-**배포 주기**: 주 1회 (금요일)
-
-### Phase 2+
-
-**배포 주기**: 2주 1회
-
-**모바일 앱 업데이트**
-- iOS: 2-4주마다 (App Store 심사 기간 고려)
-- Android: 2주마다
-
----
-
-## 보안
-
-### 비밀 관리
-
-**GitHub Secrets**
-
-| Secret | 설명 |
-|--------|------|
-| `EC2_HOST` | EC2 서버 주소 |
-| `EC2_USER` | EC2 사용자명 |
-| `EC2_PRIVATE_KEY` | SSH Private Key |
-| `DB_PASSWORD` | RDS 비밀번호 |
-| `JWT_SECRET` | JWT Secret Key |
-| `EXPO_TOKEN` | Expo Access Token |
-| `SLACK_WEBHOOK` | Slack Webhook URL |
-
-### 환경별 보안
-
-| 환경 | 보안 수준 |
-|------|----------|
-| Dev | Basic (개발용) |
-| Staging | Medium (테스트용) |
-| Production | High (SSL, WAF, 암호화) |
-
----
-
-## Phase 2+ (확장 고려사항)
-
-### 무중단 배포 (Blue-Green)
-
-- [P2] Blue-Green Deployment
-  - 2개 EC2 인스턴스 준비
-  - 로드 밸런서로 트래픽 전환
-  - 문제 발생 시 즐시 롤백
-
-### 컨테이너 배포 (Docker + Kubernetes)
-
-- [P3] Docker 컨테이너화
-- [P3] AWS ECS 또는 EKS
-- [P3] 오토스케일링
-
-### 모니터링 고도화
-
-- [P2] Datadog/New Relic APM
-- [P2] 성능 메트릭 대시보드
-- [P2] 자동화된 알림 및 에스케이레이션
-
----
-
-## 트러블슈팅
-
-### 일반적인 문제
-
-| 문제 | 원인 | 해결 방법 |
-|------|------|----------|
-| 배포 실패 | 빌드 오류 | 로그 확인, 종속성 업데이트 |
-| 서버 구동 실패 | 포트 충돌, 환경변수 | systemctl status, 로그 확인 |
-| DB 연결 실패 | 보안 그룹, 비밀번호 | RDS 설정 확인 |
-| Health check 실패 | 서버 시작 지연 | 대기 시간 증가 |
-
----
-
-## 팀 논의 필요 사항
-
-- [ ] 배포 주기 확정 (주간 vs 2주)
-- [ ] 모바일 앱 업데이트 주기
-- [ ] Blue-Green 배포 도입 시점 (Phase 2 vs Phase 3)
-- [ ] Slack 알림 채널 설정
-- [ ] 긴급 핫픽스 프로세스
-
----
-
-## 체크리스트
-
-### Phase 1 출시 전 필수
-
-- [ ] GitHub Actions CI/CD 구축
-- [ ] EC2 서버 설정 및 systemd 서비스 등록
-- [ ] EAS Build 환경 설정
-- [ ] TestFlight/Google Play Console 설정
-- [ ] Slack 알림 연동
-- [ ] 버전 태깅 규칙 확정
-- [ ] 롤백 절차 문서화
-
-### Phase 2 목표
-
-- [ ] Blue-Green Deployment 구축
-- [ ] 모니터링 대시보드 구축
-- [ ] 자동화된 롤백 시스템
+**EC2 Security Group**:
+- 인바운드:
+  - 443 (HTTPS): 0.0.0.0/0
+  - 22 (SSH): 특정 IP만 허용
+- 아웃바운드:
+  - 전체 허용
 
 ---
 
 ## 관련 문서
 
-- **기술 스택**: `core/tech-stack.md`
-- **인프라**: `reference/infra.md`
-- **테스트**: `reference/testing.md`
-- **보안**: `reference/security.md`
+- **인프라 상세**: [reference/infra.md](infra.md)
+- **보안 체크리스트**: [reference/security.md](security.md)
+- **테스트 전략**: [reference/testing.md](testing.md)
+- **API 스펙**: [reference/api-spec.md](api-spec.md)
+- **기술 스택**: [core/tech-stack.md](../core/tech-stack.md)
 
 ---
 
-> **작성일**: 2025-12-31  
-> **Phase**: Phase 1 (MVP)  
-> **담당**: DevOps + Backend + Frontend
+## 팀 논의 필요 사항
+
+- [ ] 스테이징 환경 구축 시점 (Phase 1 말 vs Phase 2 초)
+- [ ] 배포 자동화 우선순위 (Backend 먼저 vs 함께)
+- [ ] 에러 추적 도구 예산 (Sentry 유료 vs Firebase Crashlytics 무료)
+- [ ] 모니터링 도구 선택 (New Relic vs DataDog vs Prometheus)
+- [ ] Blue-Green 배포 도입 시점 (Phase 3 초 vs 중반)
+
+---
+
+> 📅 **마지막 업데이트**: 2025-12-31  
+> 📝 **버전**: 1.0.0  
+> 🎯 **Phase**: Phase 1 (MVP 개발 중)
