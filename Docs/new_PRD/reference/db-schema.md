@@ -3,7 +3,7 @@
 ## 요약 ⚡
 
 - MySQL 8.0 기반 관계형 데이터베이스
-- 핵심 테이블: users, portfolios, portfolio_entries, notification_settings, accounts, account_entries, settings
+- 핵심 테이블: users, portfolios, portfolio_entries, notification_settings, accounts, account_entries, settings, notifications
 - INTEGER 기본 키 사용 (AUTO_INCREMENT)
 - Google 소셜 로그인 지원
 - 계좌 연동 및 포트폴리오 관리 기능
@@ -19,6 +19,7 @@
 5. **accounts** - 연동 계좌
 6. **account_entries** - 계좌 내 항목들
 7. **settings** - 사용자 설정값
+8. **notifications** - 알림 스택
 
 ---
 
@@ -277,6 +278,43 @@ CREATE TABLE settings (
 
 ---
 
+### 8. notifications (알림 스택)
+
+| 컬럼명 | 타입 | 제약 | 설명 |
+|---------|------|------|------|
+| id | INT | PK, AUTO_INCREMENT | 기본 키 |
+| user_id | INT | FK, NOT NULL | users.id 참조 (수신 대상자) |
+| type | ENUM('REBALANCING_CYCLE', 'THRESHOLD_BREACH', 'SYSTEM') | NOT NULL | 알림 종류 (1.주기 2.임계치 3.시스템) |
+| title | VARCHAR(255) | NOT NULL | 알림 제목 |
+| message | TEXT | NOT NULL | 알림 본문 |
+| related_entity_id | INT | NULL | 관련 포트폴리오 ID 등 (클릭 시 이동용) |
+| is_read | BOOLEAN | DEFAULT false | 읽음 여부 |
+| created_at | TIMESTAMP | DEFAULT CURRENT_TIMESTAMP | 생성 날짜 |
+
+**인덱스**
+```sql
+CREATE INDEX idx_notifications_user_id ON notifications(user_id);
+CREATE INDEX idx_notifications_user_read ON notifications(user_id, is_read);
+CREATE INDEX idx_notifications_created_at ON notifications(created_at);
+```
+
+**DDL**
+```sql
+CREATE TABLE notifications (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT NOT NULL,
+  type ENUM('REBALANCING_CYCLE', 'THRESHOLD_BREACH', 'SYSTEM') NOT NULL,
+  title VARCHAR(255) NOT NULL,
+  message TEXT NOT NULL,
+  related_entity_id INT,
+  is_read BOOLEAN DEFAULT false,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+```
+
+---
+
 ## 관계도 (ERD)
 
 ```
@@ -301,6 +339,8 @@ accounts (1) ---< (N) account_entries
 portfolios
 
 users (1) --- (1) settings
+
+users (1) ---< (N) notifications
 ```
 
 **설명**
@@ -311,6 +351,7 @@ users (1) --- (1) settings
 - 1개의 계좌는 여러 항목(account_entries)을 가질 수 있음
 - 1개의 포트폴리오는 1개의 계좌를 메인으로 설정 가능 (1:1, optional)
 - 1명의 사용자는 1개의 설정을 가짐 (1:1)
+- 1명의 사용자는 여러 알림을 받을 수 있음
 - 모든 외래 키는 CASCADE DELETE 설정
 
 ---
