@@ -9,6 +9,7 @@
 
 body {
     font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+    /* Fixed dark background - does not change with theme */
     background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
     min-height: 100vh;
     display: flex;
@@ -23,6 +24,7 @@ body {
    THEME CONTROLLER
    ============================================= */
 .theme-controller {
+    /* Fixed dark style - does not change with theme */
     background: rgba(255, 255, 255, 0.08);
     padding: 12px 20px;
     border-radius: 16px;
@@ -51,7 +53,7 @@ body {
     padding: 8px 14px;
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
+    border-radius: 12px;
     color: rgba(255, 255, 255, 0.7);
     font-size: 12px;
     font-weight: 500;
@@ -86,7 +88,7 @@ body {
     gap: 4px;
     background: rgba(0, 0, 0, 0.2);
     padding: 4px;
-    border-radius: 10px;
+    border-radius: 12px;
 }
 
 .mode-btn {
@@ -112,15 +114,11 @@ body {
     margin-top: 50px;
     width: 375px;
     height: 812px;
-    background: #0a0a0f;
+    background: var(--bg-card-solid);
     border-radius: 40px;
     overflow: hidden;
     position: relative;
-    box-shadow:
-        0 0 0 3px #2a2a3a,
-        0 0 0 6px #1a1a2a,
-        0 25px 80px rgba(0, 0, 0, 0.5),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    box-shadow: var(--shadow-modal);
 }
 
 /* Status Bar */
@@ -136,7 +134,7 @@ body {
     left: 0;
     right: 0;
     z-index: 100;
-    color: #fff;
+    color: var(--text-primary);
     font-size: 14px;
     font-weight: 600;
 }
@@ -171,7 +169,7 @@ body {
     width: 100%;
     height: calc(100% - 44px);
     /* Full height minus status bar */
-    background: linear-gradient(180deg, #0f0f1a 0%, #1a1a2e 100%);
+    background: var(--bg-screen);
     /* NO overflow here - handled by .screen-body */
 }
 
@@ -228,13 +226,13 @@ body {
     align-items: center;
     justify-content: space-between;
     padding: 12px 20px;
-    background: rgba(15, 15, 26, 0.98);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    background: var(--bg-header);
+    border-bottom: 1px solid var(--border-color);
     min-height: 56px;
 }
 
 .header h2 {
-    color: #fff;
+    color: var(--text-primary);
     font-size: 18px;
     font-weight: 600;
 }
@@ -250,7 +248,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 12px;
+    border-radius: var(--radius-md);
     transition: background 0.2s;
 }
 
@@ -268,12 +266,12 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 12px;
+    border-radius: var(--radius-md);
     transition: all 0.2s;
 }
 
 .icon-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--bg-surface-hover);
     transform: scale(1.05);
 }
 

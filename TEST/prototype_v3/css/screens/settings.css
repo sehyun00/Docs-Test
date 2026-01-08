@@ -10,7 +10,7 @@
 }
 
 .settings-group-title {
-    color: rgba(255, 255, 255, 0.5);
+    color: var(--text-tertiary);
     font-size: 12px;
     font-weight: 600;
     text-transform: uppercase;
@@ -23,8 +23,8 @@
     align-items: center;
     justify-content: space-between;
     padding: 14px 16px;
-    background: rgba(255, 255, 255, 0.03);
-    border-radius: 12px;
+    background: var(--bg-surface);
+    border-radius: var(--radius-md);
     margin-bottom: 8px;
 }
 
@@ -38,11 +38,11 @@
     width: 48px;
     height: 48px;
     background: var(--gradient-primary);
-    border-radius: 14px;
+    border-radius: var(--radius-lg);
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #fff;
+    color: var(--text-inverse);
     font-weight: 700;
     font-size: 20px;
 }
@@ -54,28 +54,28 @@
 }
 
 .settings-name {
-    color: #fff;
+    color: var(--text-primary);
     font-size: 16px;
     font-weight: 600;
 }
 
 .settings-email {
-    color: rgba(255, 255, 255, 0.4);
+    color: var(--text-tertiary);
     font-size: 13px;
 }
 
 .settings-label {
-    color: #fff;
+    color: var(--text-primary);
     font-size: 15px;
 }
 
 .settings-value {
-    color: rgba(255, 255, 255, 0.5);
+    color: var(--text-tertiary);
     font-size: 15px;
 }
 
 .settings-arrow {
-    color: rgba(255, 255, 255, 0.3);
+    color: var(--text-disabled);
     font-size: 20px;
 }
 
@@ -84,7 +84,7 @@
     padding: 16px;
     background: var(--error-bg);
     border: 1px solid rgba(229, 115, 115, 0.3);
-    border-radius: 12px;
+    border-radius: var(--radius-md);
     color: var(--error);
     font-size: 16px;
     font-weight: 600;

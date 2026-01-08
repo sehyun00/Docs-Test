@@ -4,7 +4,7 @@
 .detail-summary {
     padding: 20px;
     background: rgba(var(--primary-rgb), 0.1);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid var(--border-color);
 }
 
 .summary-grid {
@@ -20,12 +20,12 @@
 }
 
 .item-label {
-    color: rgba(255, 255, 255, 0.5);
+    color: var(--text-tertiary);
     font-size: 12px;
 }
 
 .item-value {
-    color: #fff;
+    color: var(--text-primary);
     font-size: 16px;
     font-weight: 600;
 }
@@ -52,21 +52,21 @@
     grid-template-columns: 1fr 1fr 1fr;
     gap: 8px;
     padding: 14px;
-    background: rgba(255, 255, 255, 0.03);
-    border-radius: 12px;
+    background: var(--bg-surface);
+    border-radius: var(--radius-md);
     align-items: center;
     cursor: pointer;
     transition: all 0.2s;
 }
 
 .stock-row:hover {
-    background: rgba(255, 255, 255, 0.06);
+    background: var(--bg-surface-hover);
 }
 
 .stock-row.header-row {
     background: transparent;
     padding: 8px 14px;
-    color: rgba(255, 255, 255, 0.4);
+    color: var(--text-tertiary);
     font-size: 12px;
     cursor: default;
 }
@@ -78,13 +78,13 @@
 }
 
 .stock-name {
-    color: #fff;
+    color: var(--text-primary);
     font-size: 14px;
     font-weight: 500;
 }
 
 .stock-code {
-    color: rgba(255, 255, 255, 0.4);
+    color: var(--text-tertiary);
     font-size: 11px;
 }
 
@@ -96,7 +96,7 @@
 
 .ratio-bar {
     height: 4px;
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--border-color);
     border-radius: 2px;
     position: relative;
     overflow: visible;
@@ -119,11 +119,11 @@
 
 .ratio-text {
     font-size: 12px;
-    color: #fff;
+    color: var(--text-primary);
 }
 
 .ratio-target-text {
-    color: rgba(255, 255, 255, 0.4);
+    color: var(--text-tertiary);
     font-size: 10px;
 }
 
@@ -135,7 +135,7 @@
 }
 
 .value-main {
-    color: #fff;
+    color: var(--text-primary);
     font-size: 14px;
     font-weight: 500;
 }
@@ -180,7 +180,7 @@
     padding: 14px 16px;
     background: var(--warning-bg);
     border: 1px solid rgba(255, 183, 77, 0.3);
-    border-radius: 12px;
+    border-radius: var(--radius-md);
     margin-bottom: 16px;
 }
 
@@ -198,20 +198,20 @@
 .insight-title {
     font-size: 13px;
     font-weight: 600;
-    color: #fff;
+    color: var(--text-primary);
 }
 
 .insight-detail {
     font-size: 11px;
-    color: rgba(255, 255, 255, 0.85);
+    color: var(--text-secondary);
 }
 
 .insight-btn {
-    background: rgba(255, 255, 255, 0.15);
+    background: var(--bg-surface-hover);
     border: none;
     padding: 8px 14px;
-    border-radius: 8px;
-    color: #fff;
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
     font-size: 12px;
     font-weight: 500;
     cursor: pointer;
@@ -219,7 +219,7 @@
 }
 
 .insight-btn:hover {
-    background: rgba(255, 255, 255, 0.25);
+    background: var(--bg-card-hover);
 }
 
 /* Stock Cards */
@@ -230,17 +230,17 @@
 }
 
 .stock-card {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 14px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
     padding: 16px;
     cursor: pointer;
     transition: all 0.2s;
 }
 
 .stock-card:hover {
-    background: rgba(255, 255, 255, 0.06);
-    border-color: rgba(255, 255, 255, 0.1);
+    background: var(--bg-surface-hover);
+    border-color: var(--border-hover);
     transform: translateX(2px);
 }
 
@@ -293,7 +293,7 @@
 
 .deviation-track {
     height: 100%;
-    background: rgba(255, 255, 255, 0.08);
+    background: var(--bg-surface);
     border-radius: 3px;
     position: relative;
     overflow: hidden;
@@ -305,7 +305,7 @@
     top: -2px;
     width: 2px;
     height: 10px;
-    background: rgba(255, 255, 255, 0.4);
+    background: var(--text-tertiary);
     border-radius: 1px;
     transform: translateX(-50%);
 }
@@ -352,8 +352,8 @@
 }
 
 .deviation-tag.ok {
-    background: rgba(255, 255, 255, 0.08);
-    color: rgba(255, 255, 255, 0.5);
+    background: var(--bg-surface);
+    color: var(--text-tertiary);
 }
 
 .action-btn {
@@ -364,7 +364,7 @@
     gap: 8px;
     padding: 16px;
     border: none;
-    border-radius: 14px;
+    border-radius: var(--radius-lg);
     font-size: 15px;
     font-weight: 600;
     cursor: pointer;
@@ -379,8 +379,8 @@
 }
 
 .action-btn.secondary {
-    background: #2a2a3a;
-    color: #fff;
+    background: var(--bg-card-solid);
+    color: var(--text-primary);
 }
 
 .action-btn.secondary:hover {
@@ -389,7 +389,7 @@
 
 .action-btn.primary {
     background: var(--gradient-primary);
-    color: #fff;
+    color: var(--text-inverse);
 }
 
 .action-btn.primary:hover {

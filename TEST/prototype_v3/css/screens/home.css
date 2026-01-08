@@ -15,11 +15,11 @@
     width: 44px;
     height: 44px;
     background: var(--gradient-primary);
-    border-radius: 14px;
+    border-radius: var(--radius-lg);
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #fff;
+    color: var(--text-inverse);
     font-weight: 700;
     font-size: 18px;
 }
@@ -31,12 +31,12 @@
 
 .greeting {
     font-size: 13px;
-    color: rgba(255, 255, 255, 0.5);
+    color: var(--text-tertiary);
 }
 
 .username {
     font-size: 16px;
-    color: #fff;
+    color: var(--text-primary);
     font-weight: 600;
 }
 
@@ -48,21 +48,21 @@
 .summary-card {
     background: var(--gradient-primary-light);
     border: 1px solid rgba(var(--primary-rgb), 0.3);
-    border-radius: 20px;
+    border-radius: var(--radius-xl);
     padding: 24px;
     text-align: center;
 }
 
 .summary-label {
     display: block;
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--text-secondary);
     font-size: 14px;
     margin-bottom: 8px;
 }
 
 .summary-value {
     display: block;
-    color: #fff;
+    color: var(--text-primary);
     font-size: 32px;
     font-weight: 700;
     letter-spacing: -1px;
@@ -98,14 +98,14 @@
 }
 
 .section-header h3 {
-    color: #fff;
+    color: var(--text-primary);
     font-size: 18px;
     font-weight: 600;
 }
 
 .portfolio-count,
 .stock-count {
-    color: rgba(255, 255, 255, 0.4);
+    color: var(--text-tertiary);
     font-size: 14px;
 }
 
@@ -117,9 +117,9 @@
 }
 
 .portfolio-card {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 16px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
     padding: 16px;
     cursor: pointer;
     transition: all 0.2s;
@@ -127,8 +127,8 @@
 }
 
 .portfolio-card:hover {
-    background: rgba(255, 255, 255, 0.06);
-    border-color: rgba(255, 255, 255, 0.1);
+    background: var(--bg-surface-hover);
+    border-color: var(--border-hover);
     transform: translateY(-2px);
 }
 
@@ -142,7 +142,7 @@
 .portfolio-color {
     width: 44px;
     height: 44px;
-    border-radius: 12px;
+    border-radius: var(--radius-md);
 }
 
 .portfolio-info {
@@ -150,19 +150,19 @@
 }
 
 .portfolio-info h4 {
-    color: #fff;
+    color: var(--text-primary);
     font-size: 16px;
     font-weight: 600;
     margin-bottom: 2px;
 }
 
 .portfolio-stocks {
-    color: rgba(255, 255, 255, 0.4);
+    color: var(--text-tertiary);
     font-size: 13px;
 }
 
 .portfolio-arrow {
-    color: rgba(255, 255, 255, 0.3);
+    color: var(--text-disabled);
     font-size: 24px;
 }
 
@@ -178,12 +178,12 @@
 }
 
 .value-label {
-    color: rgba(255, 255, 255, 0.4);
+    color: var(--text-tertiary);
     font-size: 12px;
 }
 
 .value-amount {
-    color: #fff;
+    color: var(--text-primary);
     font-size: 20px;
     font-weight: 600;
 }
@@ -210,5 +210,5 @@
     font-size: 11px;
     font-weight: 600;
     padding: 4px 10px;
-    border-radius: 20px;
+    border-radius: var(--radius-pill);
 }
