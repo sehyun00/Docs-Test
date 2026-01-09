@@ -7,7 +7,7 @@
 - Phase 2: 로드 밸런서 + Auto Scaling (2~5대) + Redis ($150~250/월)
 - 목표 응답시간: API < 1초, 실시간 시세 < 2초
 - 모니터링: CloudWatch + Firebase Crashlytics
-- [P2-고려] Redis 캠싱, CDN, Multi-AZ, Read Replica
+- [P2-고려] Redis 캐싱, CDN, Multi-AZ, Read Replica
 
 ---
 
@@ -106,19 +106,20 @@
 ```sql
 -- users
 CREATE UNIQUE INDEX idx_users_email ON users(email);
-CREATE UNIQUE INDEX idx_users_google_id ON users(google_id);
+-- [팀 논의 필요] google_id 컬럼 추가 시 인덱스 생성
+-- CREATE UNIQUE INDEX idx_users_google_id ON users(google_id);
 
 -- portfolios
 CREATE INDEX idx_portfolios_user_id ON portfolios(user_id);
-CREATE INDEX idx_portfolios_display_order ON portfolios(user_id, display_order);
+CREATE UNIQUE INDEX idx_portfolios_account_id ON portfolios(account_id);
 
--- stocks
-CREATE INDEX idx_stocks_portfolio_id ON stocks(portfolio_id);
-CREATE UNIQUE INDEX idx_stocks_portfolio_stock ON stocks(portfolio_id, stock_code);
+-- portfolio_entries
+CREATE INDEX idx_portfolio_entries_portfolio_id ON portfolio_entries(portfolio_id);
+CREATE UNIQUE INDEX idx_portfolio_entries_unique ON portfolio_entries(portfolio_id, ticker);
 
--- notifications
-CREATE INDEX idx_notifications_portfolio_id ON notifications(portfolio_id);
-CREATE INDEX idx_notifications_enabled ON notifications(is_enabled, notification_time);
+-- notification_settings
+CREATE UNIQUE INDEX idx_notification_settings_portfolio_id ON notification_settings(portfolio_id);
+CREATE INDEX idx_notification_settings_enabled ON notification_settings(is_enabled, alert_time);
 ```
 
 #### 커넥션 풀 설정
@@ -227,7 +228,7 @@ spring:
 | Read Replica | 1대 (선택) |
 | 예상 비용 | $50~80/월 |
 
-**캠시 서버**
+**캐시 서버**
 
 | 항목 | 사양 |
 |------|------|
@@ -238,9 +239,9 @@ spring:
 
 **총 비용**: $150~250/월
 
-#### 캠싱 전략
+#### 캐싱 전략
 
-**Redis 캠싱**
+**Redis 캐싱
 
 | 데이터 | Key | TTL |
 |--------|-----|-----|
@@ -277,7 +278,7 @@ spring:
   - 자동 장애 조치
 
 - [P3] **CDN (CloudFront)**
-  - 정적 리소스 캠싱
+  - 정적 리소스 캐싱
   - 전세계 엣지 노드
 
 - [P3] **마이크로서비스**
@@ -411,7 +412,7 @@ jobs:
 ## 팀 논의 필요 사항
 
 - [ ] Phase 1 서버 스펙 최종 결정 (t3.small vs t3.micro)
-- [ ] Redis 캠싱 도입 시점 (Phase 1 vs Phase 2)
+- [ ] Redis 캐싱 도입 시점 (Phase 1 vs Phase 2)
 - [ ] 모니터링 도구 예산 (CloudWatch vs New Relic vs DataDog)
 - [ ] Auto Scaling 임계값 설정 (CPU 70% vs 80%)
 - [ ] 부하 테스트 수행 주체 (팀 내부 vs 외주)

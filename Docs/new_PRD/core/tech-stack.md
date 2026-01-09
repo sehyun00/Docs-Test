@@ -6,7 +6,7 @@
 
 ## 요약 ⚡
 
-React Native(Expo)로 모바일 앱을 개발하고, Spring Boot + MySQL로 백엔드 API를 구축합니다. Google OAuth 2.0으로 로그인하고 JWT 토큰으로 인증을 관리합니다. 한국투자증권 API로 실시간 주식 시세를 조회하며, AWS 인프라와 GitHub Actions로 CI/CD를 구성합니다. Phase 2에서 Redis 캠싱을 추가하여 성능을 개선합니다.
+React Native(Expo)로 모바일 앱을 개발하고, Spring Boot + MySQL로 백엔드 API를 구축합니다. Google OAuth 2.0으로 로그인하고 JWT 토큰으로 인증을 관리합니다. 한국투자증권 API로 실시간 주식 시세를 조회하며, AWS 인프라와 GitHub Actions로 CI/CD를 구성합니다. Phase 2에서 Redis 캐싱을 추가하여 성능을 개선합니다.
 
 ---
 
@@ -25,7 +25,7 @@ React Native(Expo)로 모바일 앱을 개발하고, Spring Boot + MySQL로 백�
   Spring Boot 3.x
   │
   ├──→ [MySQL]       ←── RDS (AWS)
-  ├──→ [Redis]        ←── [P2] 캠싱
+  ├──→ [Redis]        ←── [P2] 캐싱
   ├──→ [한투 API]     ←── 주식 시세
   └──→ [Google OAuth] ←── 소셜 로그인
 ```
@@ -100,7 +100,7 @@ React Native(Expo)로 모바일 앱을 개발하고, Spring Boot + MySQL로 백�
 | `spring-boot-starter-oauth2-client` | Google OAuth |
 | `jjwt` (io.jsonwebtoken) | JWT 처리 |
 | `mysql-connector-java` | MySQL 드라이버 |
-| `spring-boot-starter-data-redis` | `[P2]` Redis 캠싱 |
+| `spring-boot-starter-data-redis` | `[P2]` Redis 캐싱 |
 | `lombok` | Boilerplate 코드 감소 |
 | `spring-boot-starter-validation` | 입력값 검증 |
 
@@ -142,16 +142,21 @@ Entity (JPA 엔티티)
 
 > 상세 스키마는 `reference/db-schema.md` 참조
 
-- `users` - 사용자 정보
+- `users` - 사용자 정보 (refresh_token 컬럼 포함)
 - `portfolios` - 포트폴리오
-- `stocks` - 종목 보유 내역
-- `notifications` - 알림 설정
-- `refresh_tokens` - Refresh Token 관리
+- `portfolio_entries` - 포트폴리오 내 종목 항목
+- `portfolio_cash_entries` - 포트폴리오 내 현금 목표 비중
+- `notification_settings` - 알림 설정
+- `accounts` - 연동 계좌
+- `account_entries` - 계좌 내 종목 항목
+- `account_cash_entries` - 계좌 내 현금 잔고
+- `settings` - 사용자 설정
+- `notifications` - 알림 스택
 
 ### Redis (Phase 2)
 
 **용도**:
-- 주식 시세 캠싱 (30초~1분 TTL)
+- 주식 시세 캐싱 (30초~1분 TTL)
 - API 요청 횟수 제한 (Rate Limiting)
 
 **호스팅**: AWS ElastiCache for Redis
@@ -179,7 +184,7 @@ Entity (JPA 엔티티)
 **호출 제한**:
 - 분당: 20~30회 (API 문서 확인 필요)
 - 일당: TBD
-- **대응**: Redis 캠싱(P2), 배치 요청, Rate Limiting
+- **대응**: Redis 캐싱(P2), 배치 요청, Rate Limiting
 
 **제약사항**:
 - 장 운영 시간: 평일 09:00-15:30
@@ -265,7 +270,7 @@ Entity (JPA 엔티티)
 | RDS (MySQL) | 데이터베이스 | P1 |
 | S3 | 프로필 이미지 저장 | P1 |
 | ELB | 로드 밸런서 | P2 |
-| ElastiCache (Redis) | 캠싱 | P2 |
+| ElastiCache (Redis) | 캐싱 | P2 |
 | CloudWatch | 모니터링 & 로그 | P1 |
 
 ### EC2 인스턴스
@@ -387,7 +392,7 @@ kis: # 한국투자증권
 
 ---
 
-## 마이그레이션 및 룰백
+## 마이그레이션 및 롤백
 
 ### 마이그레이션 전략
 
@@ -399,9 +404,9 @@ kis: # 한국투자증권
 - Flyway 또는 Liquibase
 - 버전 관리된 SQL 스크립트
 
-### 룰백 계획
+### 롤백 계획
 
-각 Phase의 마이그레이션은 룰백 스크립트를 함께 작성하여 문제 발생 시 이전 버전으로 복구 가능해야 합니다.
+각 Phase의 마이그레이션은 롤백 스크립트를 함께 작성하여 문제 발생 시 이전 버전으로 복구 가능해야 합니다.
 
 ---
 
