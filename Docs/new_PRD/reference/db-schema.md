@@ -304,6 +304,7 @@ CREATE TABLE accounts (
 | currency         | ENUM('KRW', 'USD', 'JPY') | DEFAULT 'KRW'      | 거래 통화        |
 | exchange         | VARCHAR(50)               | NULL               | 거래소           |
 | created_at       | TIMESTAMP                 | NOT NULL           | 생성 날짜        |
+| updated_at       | TIMESTAMP                 | NOT NULL           | 업데이트 날짜    |
 | is_delete        | BOOLEAN                   | DEFAULT false      | 논리적 삭제 여부 |
 | delete_at        | TIMESTAMP                 | NULL               | 논리적 삭제 일시 |
 
@@ -326,6 +327,7 @@ CREATE TABLE account_entries (
   currency ENUM('KRW', 'USD', 'JPY') DEFAULT 'KRW',
   exchange VARCHAR(50),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   is_delete BOOLEAN DEFAULT false,
   delete_at TIMESTAMP NULL,
   FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE
@@ -523,6 +525,15 @@ users (1) ---< (N) notifications
 
 ---
 
+---
+
+## 팀 논의 필요 사항
+
+- [ ] `users` 테이블에 `google_id` 컬럼 추가 여부 (현재 email로만 식별)
+- [ ] `notification_settings.alert_cycle` ENUM에 `DAILY` 옵션 추가 여부 (현재 WEEKLY만 지원)
+
+---
+
 > **작성일**: 2026-01-06
 > **담당**: Backend + DBA
-> **마지막 업데이트**: 현금 자산 관리 테이블(portfolio_cash_entries, account_cash_entries) 추가
+> **마지막 업데이트**: 2026-01-09 - account_entries.updated_at 컬럼 추가, 팀 논의 사항 추가
