@@ -200,6 +200,14 @@ Table community_article_replies {
   delete_at timestamp // 논리적 삭제 일시
 }
 
+// 댓글 좋아요
+Table community_reply_likes {
+  id integer [primary key, increment]
+  user_id integer [ref: > users.id] // 사용자
+  reply_id integer [ref: > community_article_replies.id] // 댓글
+  created_at timestamp [default: `now()`]
+}
+
 // 포트폴리오 복사 이력
 Table portfolio_copy_history {
   id integer [primary key, increment]
