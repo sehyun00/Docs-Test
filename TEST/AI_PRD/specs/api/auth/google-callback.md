@@ -112,3 +112,8 @@ Content-Type: application/json
 - DB: `../db/users.md`
 - DB: `../db/refresh-tokens.md`
 - UI: `../ui/auth/login-screen.md`
+
+## 📎 선택 참조
+> 상세 UI/UX 시나리오가 필요하면 아래 파일을 참조 요청하세요.
+
+- `../../reference/pages/01_login.md` - 로그인 플로우, 엣지케이스
