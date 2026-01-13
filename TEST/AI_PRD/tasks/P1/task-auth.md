@@ -1,23 +1,33 @@
 # Task: 인증 기능 구현 (Google OAuth + JWT)
 
 ## 목표
+
 Google OAuth 2.0 로그인 + JWT 토큰 기반 인증 시스템 구현
 
 ## 스펙 참조
 
 ### API
+
 - `../../specs/api/auth/google-callback.md`
 - `../../specs/api/auth/refresh.md`
 - `../../specs/api/auth/logout.md`
 - `../../specs/api/auth/profile-update.md`
 
 ### DB
+
 - `../../specs/db/users.md`
 - `../../specs/db/refresh-tokens.md`
 
 ### UI
+
 - `../../specs/ui/auth/login-screen.md`
 - `../../specs/ui/auth/profile-input.md`
+
+## 📎 선택 참조 (사용자 요청 시)
+
+> 상세 UI/UX 시나리오가 필요하면 아래 파일을 참조 요청하세요.
+
+- `../../reference/pages/01_login.md` - 로그인 플로우, 엣지케이스, 반응형 처리
 
 ## 구현 체크리스트
 
@@ -82,23 +92,23 @@ Google OAuth 2.0 로그인 + JWT 토큰 기반 인증 시스템 구현
 
 ## 테스트 케이스
 
-| 케이스 | 예상 결과 |
-|--------|----------|
-| 신규 사용자 로그인 | users 생성, is_new_user=true, 프로필 화면 |
-| 기존 사용자 로그인 | last_login_at 업데이트, is_new_user=false, 홈 |
-| 프로필 입력 완료 | is_profile_complete=true, 기본 포트폴리오 생성 |
-| Access Token 만료 | Refresh로 자동 갱신 |
-| Refresh Token 만료 | 로그아웃 + 로그인 화면 |
-| 로그아웃 | refresh_tokens 삭제, 로그인 화면 |
+| 케이스             | 예상 결과                                      |
+| ------------------ | ---------------------------------------------- |
+| 신규 사용자 로그인 | users 생성, is_new_user=true, 프로필 화면      |
+| 기존 사용자 로그인 | last_login_at 업데이트, is_new_user=false, 홈  |
+| 프로필 입력 완료   | is_profile_complete=true, 기본 포트폴리오 생성 |
+| Access Token 만료  | Refresh로 자동 갱신                            |
+| Refresh Token 만료 | 로그아웃 + 로그인 화면                         |
+| 로그아웃           | refresh_tokens 삭제, 로그인 화면               |
 
 ## 예상 소요 시간
 
-| 파트 | 예상 시간 |
-|------|----------|
-| Backend - Auth | 3일 |
-| Backend - JWT | 1일 |
-| Frontend - 로그인 | 2일 |
-| Frontend - 프로필 | 1일 |
-| Frontend - 토큰 관리 | 1일 |
-| 테스트 | 1일 |
-| **총합** | **9일** |
+| 파트                 | 예상 시간     |
+| -------------------- | ------------- |
+| Backend - Auth       | 3일           |
+| Backend - JWT        | 1일           |
+| Frontend - 로그인    | 2일           |
+| Frontend - 프로필    | 1일           |
+| Frontend - 토큰 관리 | 1일           |
+| 테스트               | 1일           |
+| **총합**       | **9일** |
