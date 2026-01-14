@@ -67,8 +67,8 @@
     {
       "name": "notification_types",
       "schemaName": "public",
-      "x": 47.492355872844826,
-      "y": 1360.056708623176
+      "x": -497.4068374633448,
+      "y": 1520.5303857972003
     }
   ],
   "tableGroupCollapseStates": [],
@@ -218,6 +218,36 @@
       "firstRelation": "1",
       "secondFieldNames": [
         "user_id"
+      ],
+      "secondTableName": "notifications",
+      "secondSchemaName": "public",
+      "secondRelation": "*",
+      "checkPoints": []
+    },
+    {
+      "firstFieldNames": [
+        "id"
+      ],
+      "firstTableName": "notification_types",
+      "firstSchemaName": "public",
+      "firstRelation": "1",
+      "secondFieldNames": [
+        "notification_type_id"
+      ],
+      "secondTableName": "notifications",
+      "secondSchemaName": "public",
+      "secondRelation": "*",
+      "checkPoints": []
+    },
+    {
+      "firstFieldNames": [
+        "id"
+      ],
+      "firstTableName": "portfolios",
+      "firstSchemaName": "public",
+      "firstRelation": "1",
+      "secondFieldNames": [
+        "related_entity_id"
       ],
       "secondTableName": "notifications",
       "secondSchemaName": "public",
