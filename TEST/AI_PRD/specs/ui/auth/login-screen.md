@@ -85,3 +85,8 @@ Google OAuth 로그인 진입점
 ## 관련 스펙
 - API: `../api/auth/google-callback.md`
 - UI: `profile-input.md`
+
+## 📎 선택 참조
+> 상세 UI/UX 시나리오가 필요하면 아래 파일을 참조 요청하세요.
+
+- `../../reference/pages/01_login.md` - 로그인 플로우, 엣지케이스, 반응형 처리
