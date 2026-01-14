@@ -119,7 +119,54 @@ API, DB, UI 스펙을 모두 참고해서 작성해.
 
 ---
 
-## 4. 증분 개발  
+## 4. 선택 참조 (Reference)
+
+### 기본 원칙
+
+> **Task 작업 시 기본적으로 `specs/`만 참조합니다.**
+> 상세 UI/UX 시나리오가 필요하면 사용자가 `reference/`를 추가 요청합니다.
+
+### 기본 작업 (specs만 사용)
+
+```
+@AI_PRD/tasks/P1/task-auth.md 이 태스크를 구현해줘
+```
+
+→ AI는 Task에 명시된 `specs/` 파일들만 참조하여 구현
+
+### 선택 참조 요청 (사용자가 명시)
+
+```
+@AI_PRD/tasks/P1/task-auth.md 이 태스크를 구현해줘
+
+추가로 로그인 화면 상세 시나리오가 필요해.
+@AI_PRD/reference/pages/01_login.md도 참고해줘.
+```
+
+→ AI는 기본 스펙 + 사용자가 요청한 reference 파일 추가 참조
+
+### 언제 선택 참조를 요청하나?
+
+| 상황 | 요청 예시 |
+|------|----------|
+| 상세 UI/UX 플로우 필요 | "reference/pages/01_login.md도 참고해줘" |
+| 엣지케이스 확인 필요 | "페이지 시나리오에서 에러 처리 확인해줘" |
+| 디자인 가이드라인 필요 | "온보딩 슬라이드 구조 참고해줘" |
+
+### reference 폴더 구조
+
+```
+reference/
+└── pages/                    # 페이지 상세 시나리오
+    ├── 00_onboarding.md      # 온보딩 슬라이드
+    ├── 01_login.md           # 로그인 플로우
+    ├── 02_profile.md         # 프로필 입력
+    ├── 03_home.md            # 홈 화면
+    ├── 04_portfolio_detail.md # 포트폴리오 상세
+    ├── 05_stock_search.md    # 종목 검색
+    ├── 06_rebalancing.md     # 리밸런싱
+    └── 07_settings.md        # 설정
+```  
 
 ### 단계별 구현
 
