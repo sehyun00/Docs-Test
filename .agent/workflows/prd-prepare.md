@@ -71,8 +71,14 @@ _inbox/ (자유형식) → [/prd-prepare] → _staging/ (정형화) → [/prd-pr
 - _staging/[UPDATE] auth-google.md
 - _staging/[DELETE] deprecated-feature.md
 
-초안 내용 구조:
----
+⚠️ 접두어([NEW]/[UPDATE]) 결정 규칙:
+1. `specs/` 디렉토리에 해당 스펙 파일이 존재하는지 확인합니다.
+2. 파일이 없음 → 사용자의 "수정" 요청이라도 [NEW]로 생성
+3. 파일이 있음 → [UPDATE]로 생성
+4. 사용자가 명시적으로 "삭제" 요청한 경우 → [DELETE]
+
+초안 내용 구조 (파일의 시작과 끝에 --- 를 포함하지 마세요):
+
 # [추론된 제목]
 
 ## 원본 내용
@@ -90,7 +96,6 @@ _inbox/ (자유형식) → [/prd-prepare] → _staging/ (정형화) → [/prd-pr
 ## 확인 필요 사항
 - [ ] 위 분석이 맞나요?
 - [ ] 추가로 포함할 내용이 있나요?
----
 ```
 
 ### 5. 분석 결과 보고
