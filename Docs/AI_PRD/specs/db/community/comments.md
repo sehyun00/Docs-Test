@@ -6,7 +6,7 @@ related:
   api:
     - ../api/community/comment-create.md
   db:
-    - posts.md
+    - community/posts.md
 ---
 
 # comments 테이블

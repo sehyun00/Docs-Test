@@ -3,11 +3,11 @@ type: index
 description: 모든 API, DB, UI 스펙 문서의 인덱스
 role: 사람이 전체 구조를 파악하고, AI가 스펙 목록을 빠르게 조회하는 데 사용
 spec_count:
-  api: 35
-  db: 14
+  api: 45
+  db: 27
   ui: 13
-  total: 62
-last_updated: 2026-01-15
+  total: 85
+last_updated: 2026-01-16
 ---
 
 # 스펙 인덱스
@@ -94,34 +94,67 @@ last_updated: 2026-01-15
 
 ## DB 스펙 (`specs/db/`)
 
-### P1 테이블
-
-| 파일 | 테이블명 | 설명 |
-|------|----------|------|
-| [users.md](db/users.md) | `users` | 사용자 |
-| [refresh-tokens.md](db/refresh-tokens.md) | `refresh_tokens` | 리프레시 토큰 |
-| [portfolios.md](db/portfolios.md) | `portfolios`, `portfolio_items` | 포트폴리오 |
-| [notifications.md](db/notifications.md) | `notifications` | 알림 |
-| [notification-settings.md](db/notification-settings.md) | `notification_settings` | 알림 설정 |
-
-### P2/P3 테이블
+### auth (인증)
 
 | 파일 | 테이블명 | 설명 | Phase |
 |------|----------|------|:-----:|
-| [posts.md](db/posts.md) | `posts` | 게시글 | P2 |
-| [comments.md](db/comments.md) | `comments` | 댓글 | P2 |
-| [likes.md](db/likes.md) | `post_likes` | 좋아요 | P2 |
-| [follows.md](db/follows.md) | `follows` | 팔로우 | P3 |
-| [rankings-badges.md](db/rankings-badges.md) | `rankings`, `badges` | 랭킹/배지 | P3 |
-| [portfolio-copies.md](db/portfolio-copies.md) | `portfolio_copies` | 포트폴리오 복사 | P3 |
+| [users.md](db/auth/users.md) | `users` | 사용자 | P1 |
+| [user-consents.md](db/auth/user-consents.md) | `user_consents` | 사용자 동의 | P1 |
+| [token-vault.md](db/auth/token-vault.md) | `token_vault` | 토큰 저장소 | P1 |
+| [settings.md](db/auth/settings.md) | `settings` | 사용자 설정 | P1 |
 
-### 관리자/로그
+### portfolio (포트폴리오)
 
-| 파일 | 테이블명 | 설명 |
-|------|----------|------|
-| [admin-logs.md](db/admin-logs.md) | `admin_logs` | 관리자 활동 로그 |
-| [api-call-logs.md](db/api-call-logs.md) | `api_call_logs` | API 호출 로그 |
-| [error-logs.md](db/error-logs.md) | `error_logs` | 에러 로그 |
+| 파일 | 테이블명 | 설명 | Phase |
+|------|----------|------|:-----:|
+| [portfolios.md](db/portfolio/portfolios.md) | `portfolios` | 포트폴리오 | P1 |
+| [portfolio-stock-entries.md](db/portfolio/portfolio-stock-entries.md) | `portfolio_stock_entries` | 포트폴리오 종목 | P1 |
+| [portfolio-cash-entries.md](db/portfolio/portfolio-cash-entries.md) | `portfolio_cash_entries` | 포트폴리오 현금 | P1 |
+| [portfolio-snapshots.md](db/portfolio/portfolio-snapshots.md) | `portfolio_snapshots` | 포트폴리오 스냅샷 | P1 |
+| [portfolio-copies.md](db/portfolio/portfolio-copies.md) | `portfolio_copies` | 포트폴리오 복사 | P3 |
+
+### account (계좌)
+
+| 파일 | 테이블명 | 설명 | Phase |
+|------|----------|------|:-----:|
+| [accounts.md](db/account/accounts.md) | `accounts` | 증권 계좌 | P1 |
+| [account-stock-entries.md](db/account/account-stock-entries.md) | `account_stock_entries` | 계좌 보유 종목 | P1 |
+| [account-cash-entries.md](db/account/account-cash-entries.md) | `account_cash_entries` | 계좌 현금 잔고 | P1 |
+
+### notification (알림)
+
+| 파일 | 테이블명 | 설명 | Phase |
+|------|----------|------|:-----:|
+| [notifications.md](db/notification/notifications.md) | `notifications` | 알림 | P1 |
+| [notification-settings.md](db/notification/notification-settings.md) | `notification_settings` | 알림 설정 | P1 |
+| [notification-types.md](db/notification/notification-types.md) | `notification_types` | 알림 유형 | P1 |
+| [device-tokens.md](db/notification/device-tokens.md) | `device_tokens` | 디바이스 토큰 | P1 |
+
+### community (커뮤니티)
+
+| 파일 | 테이블명 | 설명 | Phase |
+|------|----------|------|:-----:|
+| [posts.md](db/community/posts.md) | `posts` | 게시글 | P2 |
+| [comments.md](db/community/comments.md) | `comments` | 댓글 | P2 |
+| [likes.md](db/community/likes.md) | `post_likes` | 좋아요 | P2 |
+| [follows.md](db/community/follows.md) | `follows` | 팔로우 | P3 |
+| [rankings-badges.md](db/community/rankings-badges.md) | `rankings`, `badges` | 랭킹/배지 | P3 |
+
+### admin (관리자)
+
+| 파일 | 테이블명 | 설명 | Phase |
+|------|----------|------|:-----:|
+| [admin-logs.md](db/admin/admin-logs.md) | `admin_logs` | 관리자 활동 로그 | P1 |
+| [announcements.md](db/admin/announcements.md) | `announcements` | 공지사항 | P1 |
+
+### log (로그)
+
+| 파일 | 테이블명 | 설명 | Phase |
+|------|----------|------|:-----:|
+| [audit-logs.md](db/log/audit-logs.md) | `audit_logs` | 감사 로그 | P1 |
+| [api-call-logs.md](db/log/api-call-logs.md) | `api_call_logs` | API 호출 로그 | P1 |
+| [error-logs.md](db/log/error-logs.md) | `error_logs` | 에러 로그 | P1 |
+| [user-activities.md](db/log/user-activities.md) | `user_activities` | 사용자 활동 | P1 |
 
 ---
 

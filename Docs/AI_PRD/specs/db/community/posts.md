@@ -7,7 +7,7 @@ related:
     - ../api/community/post-create.md
     - ../api/community/feed-list.md
   db:
-    - comments.md
+    - community/comments.md
 ---
 
 # posts 테이블

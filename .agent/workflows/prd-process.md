@@ -2,6 +2,8 @@
 description: _staging/의 정형화된 초안을 최종 specs/에 반영
 ---
 
+// turbo-all
+
 # /prd-process 워크플로우
 
 PRD `_staging/` 디렉토리의 정형화된 초안들을 최종 스펙 파일로 변환하여 `specs/`에 반영합니다.

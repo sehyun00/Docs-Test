@@ -2,6 +2,8 @@
 description: CHANGELOG 기반으로 변경된 specs를 tasks에 동기화
 ---
 
+// turbo-all
+
 # /prd-sync-tasks 워크플로우
 
 `/prd-process` 완료 후 생성된 CHANGELOG를 읽고, 관련 task 파일의 스펙 참조를 업데이트합니다.
