@@ -7,24 +7,26 @@ endpoint: /api/community/rankings
 auth: none
 related:
   db:
-    - ../../db/rankings-badges.md
-  api:
-    - badges.md
+    - specs/db/community/rankings.md
+    - specs/db/community/badges.md
 ---
 
 # GET /api/community/rankings
 
 ## 개요
+
 랭킹 조회 (P3)
 
 ## 스펙
 
 ### Request
+
 - **URL**: `/api/community/rankings`
 - **Method**: `GET`
 - **Auth**: 불필요
 
 ### Query Parameters
+
 | 파라미터 | 타입 | 필수 | 설명 | 기본값 |
 |----------|------|------|------|--------|
 | type | enum | N | WEEKLY, MONTHLY, ALL_TIME | WEEKLY |
@@ -35,6 +37,7 @@ related:
 ## Response
 
 ### 성공 (200)
+
 ```json
 {
   "period": {
@@ -124,5 +127,6 @@ GROUP BY u.id;
 ```
 
 ## 관련 스펙
-- DB: `../db/rankings.md`
-- API: `badges.md`
+
+- DB: `specs/db/community/rankings.md`
+- DB: `specs/db/community/badges.md`

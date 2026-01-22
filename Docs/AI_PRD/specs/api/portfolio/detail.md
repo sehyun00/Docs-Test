@@ -7,29 +7,35 @@ endpoint: /api/portfolios/{portfolioId}
 auth: required
 related:
   db:
-    - ../../db/portfolios.md
+    - specs/db/portfolio/portfolios.md
+    - specs/db/portfolio/portfolio-stock-entries.md
+    - specs/db/portfolio/portfolio-cash-entries.md
   ui:
-    - ../../ui/portfolio/detail.md
+    - specs/ui/portfolio/detail.md
 ---
 
 # GET /api/portfolios/{portfolioId}
 
 ## 개요
+
 포트폴리오 상세 조회 (종목 목록 포함)
 
 ## 스펙
 
 ### Request
+
 - **URL**: `/api/portfolios/{portfolioId}`
 - **Method**: `GET`
 - **Auth**: Bearer Token 필수
 
 ### Headers
+
 ```
 Authorization: Bearer {access_token}
 ```
 
 ### Path Parameters
+
 | 파라미터 | 타입 | 필수 | 설명 |
 |----------|------|------|------|
 | portfolioId | uuid | Y | 포트폴리오 ID |
@@ -37,6 +43,7 @@ Authorization: Bearer {access_token}
 ## Response
 
 ### 성공 (200)
+
 ```json
 {
   "id": "uuid",
@@ -68,6 +75,7 @@ Authorization: Bearer {access_token}
 ```
 
 ### 에러
+
 | 코드 | 상황 | 메시지 |
 |------|------|--------|
 | 401 | 인증 실패 | "로그인이 필요합니다" |
@@ -92,6 +100,8 @@ Authorization: Bearer {access_token}
 ```
 
 ## 관련 스펙
-- DB: `../db/portfolios.md`
-- DB: `../db/portfolio-items.md`
-- UI: `../ui/portfolio/detail.md`
+
+- DB: `specs/db/portfolio/portfolios.md`
+- DB: `specs/db/portfolio/portfolio-stock-entries.md`
+- DB: `specs/db/portfolio/portfolio-cash-entries.md`
+- UI: `specs/ui/portfolio/detail.md`

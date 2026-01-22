@@ -5,13 +5,14 @@ endpoint: /api/portfolios/{portfolioId}/snapshots
 method: GET
 related:
   db:
-    - portfolio-snapshots.md
+    - specs/db/portfolio/portfolio-snapshots.md
   ui: []
 ---
 
 # 포트폴리오 스냅샷 목록 조회
 
 ## 개요
+
 포트폴리오 스냅샷 목록 조회 API
 
 ## 요청

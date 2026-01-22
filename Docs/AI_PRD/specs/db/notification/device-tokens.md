@@ -4,13 +4,15 @@ phase: P1
 table: device_tokens
 related:
   db:
-    - auth/users.md
-  api: []
+    - specs/db/auth/users.md
+  api:
+    - specs/api/notification/fcm-token.md
 ---
 
 # device_tokens 테이블
 
 ## 개요
+
 푸시 알림용 디바이스 토큰 관리
 
 ## 스키마
@@ -44,4 +46,6 @@ CREATE TABLE device_tokens (
 | updated_at | TIMESTAMP | Y | 수정일 | P1 |
 
 ## 관련 스펙
-- DB: `users.md`
+
+- DB: `specs/db/auth/users.md`
+- API: `specs/api/notification/fcm-token.md`

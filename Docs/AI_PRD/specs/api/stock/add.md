@@ -7,35 +7,40 @@ endpoint: /api/portfolios/{portfolioId}/items
 auth: required
 related:
   db:
-    - ../../db/portfolios.md
+    - specs/db/portfolio/portfolios.md
   ui:
-    - ../../ui/stock/add.md
+    - specs/ui/stock/add.md
 ---
 
 # POST /api/portfolios/{portfolioId}/items
 
 ## 개요
+
 포트폴리오에 종목 추가 (최대 50종목)
 
 ## 스펙
 
 ### Request
+
 - **URL**: `/api/portfolios/{portfolioId}/items`
 - **Method**: `POST`
 - **Auth**: Bearer Token 필수
 
 ### Headers
+
 ```
 Authorization: Bearer {access_token}
 Content-Type: application/json
 ```
 
 ### Path Parameters
+
 | 파라미터 | 타입 | 필수 | 설명 |
 |----------|------|------|------|
 | portfolioId | uuid | Y | 포트폴리오 ID |
 
 ### Body
+
 ```json
 {
   "stockCode": "005930",
@@ -55,6 +60,7 @@ Content-Type: application/json
 ## Response
 
 ### 성공 (201)
+
 ```json
 {
   "id": "uuid",
@@ -68,6 +74,7 @@ Content-Type: application/json
 ```
 
 ### 에러
+
 | 코드 | 상황 | 메시지 |
 |------|------|--------|
 | 400 | 수량 0 이하 | "보유 수량은 1주 이상이어야 합니다" |
@@ -95,5 +102,6 @@ Content-Type: application/json
 ```
 
 ## 관련 스펙
-- DB: `../db/portfolios.md`
-- UI: `../ui/stock/add.md`
+
+- DB: `specs/db/portfolio/portfolios.md`
+- UI: `specs/ui/stock/add.md`

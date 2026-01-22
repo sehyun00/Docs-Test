@@ -4,7 +4,7 @@ phase: P3
 table: rankings
 related:
   api:
-    - ../../api/community/ranking.md
+    - specs/api/community/ranking.md
 ---
 
 # rankings 테이블
@@ -55,4 +55,4 @@ CREATE TABLE rankings (
 
 ## 관련 스펙
 
-- API: `../../api/community/ranking.md`
+- API: `specs/api/community/ranking.md`

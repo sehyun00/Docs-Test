@@ -3,8 +3,7 @@ type: db
 phase: P2
 table: user_blocks
 related:
-  api:
-    - ../../api/community/block.md
+  api: []
   ui: []
 ---
 
@@ -74,4 +73,4 @@ ORDER BY b.created_at DESC;
 
 ## 관련 스펙
 
-- API: `../../api/community/block.md`
+> ⚠️ block.md API 미생성 (P2 이후 추가 예정)

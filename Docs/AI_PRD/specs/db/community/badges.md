@@ -3,10 +3,8 @@ type: db
 phase: P3
 table: badges, user_badges
 related:
-  api:
-    - ../../api/community/badges.md
-  ui:
-    - ../../ui/community/badges.md
+  api: []
+  ui: []
 ---
 
 # badges, user_badges 테이블
@@ -86,5 +84,4 @@ INSERT INTO badges (code, name, description, icon_url) VALUES
 
 ## 관련 스펙
 
-- API: `../../api/community/badges.md`
-- UI: `../../ui/community/badges.md`
+> ⚠️ API 및 UI 스펙 미생성 (P3 이후 추가 예정)

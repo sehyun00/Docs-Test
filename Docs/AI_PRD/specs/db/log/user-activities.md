@@ -4,13 +4,14 @@ phase: P1
 table: user_activities
 related:
   db:
-    - auth/users.md
+    - specs/db/auth/users.md
   api: []
 ---
 
 # user_activities 테이블
 
 ## 개요
+
 사용자 행동 추적 (분석, UX 개선용)
 
 ## 스키마
@@ -56,4 +57,5 @@ CREATE TABLE user_activities (
 | SHARE | share_portfolio | {"platform": "kakao"} |
 
 ## 관련 스펙
-- DB: `users.md`
+
+- DB: `specs/db/auth/users.md`

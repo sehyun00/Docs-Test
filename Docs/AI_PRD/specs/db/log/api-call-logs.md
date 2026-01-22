@@ -3,13 +3,13 @@ type: db
 phase: P1
 table: api_call_logs
 related:
-  api:
-    - ../api/admin/monitoring-api.md
+  api: []
 ---
 
 # api_call_logs 테이블
 
 ## 개요
+
 외부 API 호출 로그 (한투 API 모니터링용)
 
 ## 스키마
@@ -67,4 +67,5 @@ ORDER BY date;
 ```
 
 ## 관련 스펙
-- API: `../api/admin/monitoring-api.md`
+
+> ⚠️ monitoring-api.md 미생성 (admin 도메인에서 추가 예정)

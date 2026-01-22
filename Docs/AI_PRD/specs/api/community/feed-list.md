@@ -104,7 +104,7 @@ Authorization: Bearer {access_token} (선택)
 ```
 1. (선택) JWT 토큰이 있으면 user_id 추출 (좋아요 여부 확인용)
 2. Query Parameter 파싱
-3. posts와 portfolios(is_public=true) 테이블 UNION 조회
+3. community_articles와 portfolios(is_public=true) 테이블 UNION 조회
    - P2: sort=LATEST만 지원 (created_at DESC)
    - P3: POPULAR, FOLLOWING 추가
 4. category 필터 적용 (게시글만 해당)
@@ -117,6 +117,6 @@ Authorization: Bearer {access_token} (선택)
 
 ## 관련 스펙
 
-- DB: `../db/posts.md`
-- DB: `../db/portfolios.md`
-- UI: `../ui/community/feed.md`
+- DB: `specs/db/community/articles.md`
+- DB: `specs/db/portfolio/portfolios.md`
+- UI: `specs/ui/community/feed.md`
