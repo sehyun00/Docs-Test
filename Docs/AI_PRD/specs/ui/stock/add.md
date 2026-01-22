@@ -12,6 +12,7 @@ reference: ../../../reference/pages/stock_search.md
 # 종목 추가 화면 (Stock Add)
 
 ## 개요
+
 종목 검색 및 포트폴리오에 추가
 
 ## 레이아웃
@@ -69,12 +70,14 @@ reference: ../../../reference/pages/stock_search.md
 ## 컴포넌트
 
 ### 1. 검색 화면
+
 | 요소 | 설명 |
 |------|------|
 | 검색 입력 | 종목명/코드 입력 (자동 포커스) |
 | 검색 결과 | 종목명, 코드, 현재가, 등락률 |
 
 ### 2. 입력 화면
+
 | 요소 | 설명 |
 |------|------|
 | 현재가 | 실시간 가격 + 등락률 |
@@ -103,5 +106,6 @@ reference: ../../../reference/pages/stock_search.md
 | 저장 중 | 버튼 로딩 상태 |
 
 ## 관련 스펙
+
 - API: `../api/stock/search.md`
 - API: `../api/stock/add.md`

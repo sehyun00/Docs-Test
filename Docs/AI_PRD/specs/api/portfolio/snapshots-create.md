@@ -5,13 +5,14 @@ endpoint: /api/portfolios/{portfolioId}/snapshots
 method: POST
 related:
   db:
-    - portfolio-snapshots.md
+    - specs/db/portfolio/portfolio-snapshots.md
   ui: []
 ---
 
 # 포트폴리오 스냅샷 생성
 
 ## 개요
+
 포트폴리오 스냅샷 수동 생성 API
 
 ## 요청
@@ -51,6 +52,7 @@ POST /api/portfolios/{portfolioId}/snapshots
 ```
 
 ## 비즈니스 로직
+
 - 현재 포트폴리오 상태를 스냅샷으로 저장
 - 종목별 수량, 가격, 비율 정보 포함
 

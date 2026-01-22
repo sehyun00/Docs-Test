@@ -4,13 +4,14 @@ phase: P1
 table: portfolio_stock_entries
 related:
   db:
-    - portfolio/portfolios.md
+    - specs/db/portfolio/portfolios.md
   api: []
 ---
 
 # portfolio_stock_entries 테이블
 
 ## 개요
+
 포트폴리오 내 개별 종목 항목 관리 (목표 비중 설정)
 
 ## 스키마
@@ -48,4 +49,5 @@ CREATE TABLE portfolio_stock_entries (
 | delete_at | TIMESTAMP | N | 삭제 일시 | P1 |
 
 ## 관련 스펙
-- DB: `portfolios.md`
+
+- DB: `specs/db/portfolio/portfolios.md`

@@ -7,30 +7,33 @@ endpoint: /api/portfolios
 auth: required
 related:
   db:
-    - ../../db/portfolios.md
-  ui:
-    - ../../ui/portfolio/create.md
+    - specs/db/portfolio/portfolios.md
+  ui: []
 ---
 
 # POST /api/portfolios
 
 ## 개요
+
 포트폴리오 생성 (최대 5개)
 
 ## 스펙
 
 ### Request
+
 - **URL**: `/api/portfolios`
 - **Method**: `POST`
 - **Auth**: Bearer Token 필수
 
 ### Headers
+
 ```
 Authorization: Bearer {access_token}
 Content-Type: application/json
 ```
 
 ### Body
+
 ```json
 {
   "name": "string (필수, 1~20자)",
@@ -46,6 +49,7 @@ Content-Type: application/json
 ## Response
 
 ### 성공 (201)
+
 ```json
 {
   "id": "uuid",
@@ -58,6 +62,7 @@ Content-Type: application/json
 ```
 
 ### 에러
+
 | 코드 | 상황 | 메시지 |
 |------|------|--------|
 | 400 | 이름 누락 | "포트폴리오 이름을 입력해주세요" |
@@ -81,5 +86,6 @@ Content-Type: application/json
 ```
 
 ## 관련 스펙
-- DB: `../db/portfolios.md`
-- UI: `../ui/portfolio/create.md`
+
+- DB: `specs/db/portfolio/portfolios.md`
+- UI: `[]` (미생성)

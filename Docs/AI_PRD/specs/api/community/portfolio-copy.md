@@ -7,28 +7,32 @@ endpoint: /api/community/portfolios/{portfolioId}/copy
 auth: verified
 related:
   db:
-    - ../../db/portfolios.md
-    - ../../db/portfolio-copies.md
+    - specs/db/portfolio/portfolios.md
+    - specs/db/portfolio/portfolio-copies.md
 ---
 
 # POST /api/community/portfolios/{portfolioId}/copy
 
 ## 개요
+
 포트폴리오 복사
 
 ## 스펙
 
 ### Request
+
 - **URL**: `/api/community/portfolios/{portfolioId}/copy`
 - **Method**: `POST`
 - **Auth**: Bearer Token 필수 (본인인증 필수)
 
 ### Path Parameters
+
 | 파라미터 | 타입 | 필수 | 설명 |
 |----------|------|------|------|
 | portfolioId | uuid | Y | 복사할 포트폴리오 ID |
 
 ### Body
+
 ```json
 {
   "name": "string (선택, 없으면 원본 이름 + ' (복사)')"
@@ -38,6 +42,7 @@ related:
 ## Response
 
 ### 성공 (201)
+
 ```json
 {
   "id": "uuid",
@@ -59,6 +64,7 @@ related:
 ```
 
 ### 에러
+
 | 코드 | 상황 | 메시지 |
 |------|------|--------|
 | 400 | 포트폴리오 5개 초과 | "포트폴리오는 최대 5개까지 생성할 수 있습니다" |
@@ -88,5 +94,6 @@ related:
 ```
 
 ## 관련 스펙
-- DB: `../db/portfolios.md`
-- DB: `../db/portfolio-copies.md`
+
+- DB: `specs/db/portfolio/portfolios.md`
+- DB: `specs/db/portfolio/portfolio-copies.md`

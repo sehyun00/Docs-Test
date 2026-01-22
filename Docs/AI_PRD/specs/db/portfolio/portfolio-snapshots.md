@@ -4,17 +4,18 @@ phase: P1
 table: portfolio_snapshots
 related:
   db:
-    - portfolio/portfolios.md
+    - specs/db/portfolio/portfolios.md
   api:
-    - portfolio/snapshots-list.md
-    - portfolio/snapshots-detail.md
-    - portfolio/snapshots-create.md
-    - portfolio/snapshots-compare.md
+    - specs/api/portfolio/snapshots-list.md
+    - specs/api/portfolio/snapshots-detail.md
+    - specs/api/portfolio/snapshots-create.md
+    - specs/api/portfolio/snapshots-compare.md
 ---
 
 # portfolio_snapshots 테이블
 
 ## 개요
+
 포트폴리오 상태 스냅샷 저장 (히스토리 추적, 리밸런싱 기록)
 
 ## 스키마
@@ -60,4 +61,5 @@ CREATE TABLE portfolio_snapshots (
 | created_at | TIMESTAMP | Y | 스냅샷 일시 | P1 |
 
 ## 관련 스펙
-- DB: `portfolios.md`
+
+- DB: `specs/db/portfolio/portfolios.md`

@@ -4,19 +4,22 @@ phase: P1
 table: accounts
 related:
   db:
-    - auth/users.md
-    - auth/token-vault.md
-    - account/account-stock-entries.md
-    - account/account-cash-entries.md
-  api: []
+    - specs/db/auth/users.md
+    - specs/db/auth/token-vault.md
+    - specs/db/account/account-stock-entries.md
+    - specs/db/account/account-cash-entries.md
+  api:
+    - specs/api/account/list-create.md
+    - specs/api/account/update-delete.md
 ---
-
 # accounts 테이블
 
 ## 개요
+
 증권사 연동 계좌 정보 관리
 
 > [!NOTE]
+>
 > - **P1**: 증권사 연동 없이 사용자가 수동으로 계좌 정보 입력 (`is_connected = FALSE`)
 > - **P2**: 증권사 API 연동을 통한 자동 동기화
 > - access_token, refresh_token은 token_vault 테이블로 분리하여 암호화 저장합니다.
@@ -42,19 +45,20 @@ CREATE TABLE accounts (
 
 ## 컬럼 상세
 
-| 컬럼 | 타입 | 필수 | 설명 | Phase |
-|------|------|------|------|-------|
-| id | INTEGER | Y | PK, AUTO_INCREMENT | P1 |
-| user_id | INTEGER | Y | FK → users.id | P1 |
-| brokerage_name | VARCHAR(50) | N | 증권사 명 | P1 |
-| account_number | VARCHAR(255) | N | AES-256 암호화된 계좌번호 | P1 |
-| is_connected | BOOLEAN | Y | 연결 상태 | P1 |
-| created_at | TIMESTAMP | Y | 생성일 | P1 |
-| updated_at | TIMESTAMP | Y | 수정일 | P1 |
-| is_delete | BOOLEAN | Y | 논리적 삭제 | P1 |
-| delete_at | TIMESTAMP | N | 삭제 일시 | P1 |
+| 컬럼           | 타입         | 필수 | 설명                      | Phase |
+| -------------- | ------------ | ---- | ------------------------- | ----- |
+| id             | INTEGER      | Y    | PK, AUTO_INCREMENT        | P1    |
+| user_id        | INTEGER      | Y    | FK → users.id            | P1    |
+| brokerage_name | VARCHAR(50)  | N    | 증권사 명                 | P1    |
+| account_number | VARCHAR(255) | N    | AES-256 암호화된 계좌번호 | P1    |
+| is_connected   | BOOLEAN      | Y    | 연결 상태                 | P1    |
+| created_at     | TIMESTAMP    | Y    | 생성일                    | P1    |
+| updated_at     | TIMESTAMP    | Y    | 수정일                    | P1    |
+| is_delete      | BOOLEAN      | Y    | 논리적 삭제               | P1    |
+| delete_at      | TIMESTAMP    | N    | 삭제 일시                 | P1    |
 
 ## 관련 스펙
+
 - DB: `users.md`
 - DB: `token-vault.md`
 - DB: `account-stock-entries.md`

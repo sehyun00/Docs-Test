@@ -4,12 +4,12 @@ phase: P1
 table: portfolios
 related:
   api:
-    - ../api/portfolio/list.md
-    - ../api/portfolio/detail.md
-    - ../api/portfolio/create.md
+    - specs/api/portfolio/list.md
+    - specs/api/portfolio/detail.md
+    - specs/api/portfolio/create.md
   db:
-    - ./portfolio-stock-entries.md
-    - ./portfolio-cash-entries.md
+    - specs/db/portfolio/portfolio-stock-entries.md
+    - specs/db/portfolio/portfolio-cash-entries.md
 ---
 
 # portfolios 테이블
@@ -82,8 +82,8 @@ WHERE id = ?;
 
 ## 관련 스펙
 
-- DB: `./portfolio-stock-entries.md` - 포트폴리오 종목 엔트리
-- DB: `./portfolio-cash-entries.md` - 포트폴리오 현금 엔트리
-- API: `../api/portfolio/list.md`
-- API: `../api/portfolio/detail.md`
-- API: `../api/portfolio/create.md`
+- DB: `specs/db/portfolio/portfolio-stock-entries.md` - 포트폴리오 종목 엔트리
+- DB: `specs/db/portfolio/portfolio-cash-entries.md` - 포트폴리오 현금 엔트리
+- API: `specs/api/portfolio/list.md`
+- API: `specs/api/portfolio/detail.md`
+- API: `specs/api/portfolio/create.md`

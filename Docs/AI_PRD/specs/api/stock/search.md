@@ -7,27 +7,31 @@ endpoint: /api/stocks/search
 auth: required
 related:
   ui:
-    - ../../ui/stock/search.md
+    - specs/ui/stock/search.md
 ---
 
 # GET /api/stocks/search
 
 ## 개요
+
 종목 검색 (한국투자증권 API 연동)
 
 ## 스펙
 
 ### Request
+
 - **URL**: `/api/stocks/search`
 - **Method**: `GET`
 - **Auth**: Bearer Token 필수
 
 ### Headers
+
 ```
 Authorization: Bearer {access_token}
 ```
 
 ### Query Parameters
+
 | 파라미터 | 타입 | 필수 | 설명 | 기본값 |
 |----------|------|------|------|--------|
 | keyword | string | Y | 검색어 (종목명 또는 종목코드) | - |
@@ -36,6 +40,7 @@ Authorization: Bearer {access_token}
 ## Response
 
 ### 성공 (200)
+
 ```json
 {
   "stocks": [
@@ -60,6 +65,7 @@ Authorization: Bearer {access_token}
 ```
 
 ### 에러
+
 | 코드 | 상황 | 메시지 |
 |------|------|--------|
 | 400 | 검색어 누락 | "검색어를 입력해주세요" |
@@ -80,4 +86,5 @@ Authorization: Bearer {access_token}
 ```
 
 ## 관련 스펙
-- UI: `../ui/stock/search.md`
+
+- UI: `specs/ui/stock/search.md`

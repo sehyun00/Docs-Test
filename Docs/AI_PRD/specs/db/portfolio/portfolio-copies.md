@@ -4,12 +4,13 @@ phase: P3
 table: portfolio_copies
 related:
   api:
-    - ../api/community/portfolio-copy.md
+    - specs/api/community/portfolio-copy.md
 ---
 
 # portfolio_copies 테이블
 
 ## 개요
+
 포트폴리오 복사 기록
 
 ## 스키마
@@ -54,4 +55,5 @@ ALTER TABLE portfolios ADD INDEX idx_portfolios_like (like_count DESC);
 ```
 
 ## 관련 스펙
-- API: `../api/community/portfolio-copy.md`
+
+- API: `specs/api/community/portfolio-copy.md`

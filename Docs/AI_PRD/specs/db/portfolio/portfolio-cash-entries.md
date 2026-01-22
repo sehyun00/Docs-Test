@@ -4,13 +4,14 @@ phase: P1
 table: portfolio_cash_entries
 related:
   db:
-    - portfolio/portfolios.md
+    - specs/db/portfolio/portfolios.md
   api: []
 ---
 
 # portfolio_cash_entries 테이블
 
 ## 개요
+
 포트폴리오 내 현금 목표 비중 관리 (통화별)
 
 ## 스키마
@@ -45,4 +46,5 @@ CREATE TABLE portfolio_cash_entries (
 | delete_at | TIMESTAMP | N | 삭제 일시 | P1 |
 
 ## 관련 스펙
-- DB: `portfolios.md`
+
+- DB: `specs/db/portfolio/portfolios.md`

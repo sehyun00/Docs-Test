@@ -4,16 +4,17 @@ phase: P1
 screen: 포트폴리오 상세 화면
 related:
   api:
-    - ../../api/portfolio/detail.md
+    - specs/api/portfolio/detail.md
   ui:
-    - ../stock/add.md
-    - ../rebalancing/check.md
+    - specs/ui/stock/add.md
+    - specs/ui/rebalancing/check.md
 reference: ../../../reference/pages/portfolio_detail.md
 ---
 
 # 포트폴리오 상세 화면 (Portfolio Detail)
 
 ## 개요
+
 포트폴리오 종목 목록 및 리밸런싱 정보 표시
 
 ## 레이아웃
@@ -57,21 +58,25 @@ reference: ../../../reference/pages/portfolio_detail.md
 ## 컴포넌트
 
 ### 1. 헤더
+
 - 뒤로가기 (←)
 - 포트폴리오 이름 + 설명
 - 편집 버튼 (✏️)
 
 ### 2. 요약 카드
+
 | 요소 | 설명 |
 |------|------|
 | 총 평가금액 | 종목 + 현금 합계 |
 | 현금 | 원화 + 달러 표시 |
 
 ### 3. 리밸런싱 알림 카드
+
 - 조건: 임계값 초과 종목 있을 때만 표시
 - 버튼: 리밸런싱 화면 이동
 
 ### 4. 종목 카드
+
 | 요소 | 설명 |
 |------|------|
 | 종목명 | 종목 이름 (코드) |
@@ -102,6 +107,7 @@ reference: ../../../reference/pages/portfolio_detail.md
 | 현재가 업데이트 중 | 개별 종목 로딩 스피너 |
 
 ## 관련 스펙
-- API: `../api/portfolio/detail.md`
-- UI: `../stock/add.md`
-- UI: `../rebalancing/check.md`
+
+- API: `specs/api/portfolio/detail.md`
+- UI: `specs/ui/stock/add.md`
+- UI: `specs/ui/rebalancing/check.md`

@@ -1,30 +1,31 @@
 ---
 type: api
-phase: P3
+phase: P2
 category: community
 method: POST
 endpoint: /api/community/follows
 auth: verified
 related:
   db:
-    - ../../db/follows.md
-  api:
-    - profile.md
+    - specs/db/community/follows.md
 ---
 
 # POST /api/community/follows
 
 ## 개요
-팔로우 등록/취소 (P3)
+
+팔로우 등록/취소 (P2)
 
 ## 스펙
 
 ### Request
+
 - **URL**: `/api/community/follows`
 - **Method**: `POST`
 - **Auth**: Bearer Token 필수 (본인인증 필수)
 
 ### Body
+
 ```json
 {
   "targetUserId": "uuid"
@@ -34,6 +35,7 @@ related:
 ## Response
 
 ### 성공 (200)
+
 ```json
 {
   "targetUserId": "uuid",
@@ -43,6 +45,7 @@ related:
 ```
 
 ### 에러
+
 | 코드 | 상황 | 메시지 |
 |------|------|--------|
 | 400 | 자기 자신 팔로우 | "자신을 팔로우할 수 없습니다" |
@@ -72,5 +75,5 @@ related:
 ```
 
 ## 관련 스펙
-- DB: `../db/follows.md`
-- API: `profile.md`
+
+- DB: `specs/db/community/follows.md`

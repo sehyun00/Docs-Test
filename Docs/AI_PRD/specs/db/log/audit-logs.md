@@ -4,13 +4,14 @@ phase: P1
 table: audit_logs
 related:
   db:
-    - auth/users.md
+    - specs/db/auth/users.md
   api: []
 ---
 
 # audit_logs 테이블
 
 ## 개요
+
 보안 및 감사 추적 로그 (CRUD 작업, 로그인 등)
 
 > [!IMPORTANT]
@@ -54,4 +55,5 @@ CREATE TABLE audit_logs (
 | created_at | TIMESTAMP | Y | 로그 생성일 | P1 |
 
 ## 관련 스펙
-- DB: `users.md`
+
+- DB: `specs/db/auth/users.md`

@@ -4,7 +4,7 @@ phase: P2
 table: user_follows
 related:
   api:
-    - ../../api/community/follow.md
+    - specs/api/community/follow.md
   ui: []
 ---
 
@@ -71,4 +71,4 @@ ORDER BY f.created_at DESC;
 
 ## 관련 스펙
 
-- API: `../../api/community/follow.md`
+- API: `specs/api/community/follow.md`

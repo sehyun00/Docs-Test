@@ -7,36 +7,41 @@ endpoint: /api/portfolios/{portfolioId}/rebalancing
 auth: required
 related:
   db:
-    - ../../db/portfolios.md
+    - specs/db/portfolio/portfolios.md
   ui:
-    - ../../ui/rebalancing/check.md
+    - specs/ui/rebalancing/check.md
   api:
-    - ../notification/list.md
+    - specs/api/notification/list.md
 ---
 
 # GET /api/portfolios/{portfolioId}/rebalancing
 
 ## 개요
+
 리밸런싱 제안 계산 (목표 비율 대비 현재 비율 분석)
 
 ## 스펙
 
 ### Request
+
 - **URL**: `/api/portfolios/{portfolioId}/rebalancing`
 - **Method**: `GET`
 - **Auth**: Bearer Token 필수
 
 ### Headers
+
 ```
 Authorization: Bearer {access_token}
 ```
 
 ### Path Parameters
+
 | 파라미터 | 타입 | 필수 | 설명 |
 |----------|------|------|------|
 | portfolioId | uuid | Y | 포트폴리오 ID |
 
 ### Query Parameters
+
 | 파라미터 | 타입 | 필수 | 설명 | 기본값 |
 |----------|------|------|------|--------|
 | threshold | int | N | 임계값 (3, 5, 10) | 5 |
@@ -44,6 +49,7 @@ Authorization: Bearer {access_token}
 ## Response
 
 ### 성공 (200)
+
 ```json
 {
   "totalValue": 10000000,
@@ -84,6 +90,7 @@ Authorization: Bearer {access_token}
 ```
 
 ### 에러
+
 | 코드 | 상황 | 메시지 |
 |------|------|--------|
 | 400 | 평가금액 0원 | "리밸런싱을 계산할 수 없습니다" |
@@ -112,6 +119,7 @@ Authorization: Bearer {access_token}
 ```
 
 ## 관련 스펙
-- DB: `../db/portfolios.md`
-- UI: `../ui/rebalancing/check.md`
-- API: `../notification/list.md`
+
+- DB: `specs/db/portfolio/portfolios.md`
+- UI: `specs/ui/rebalancing/check.md`
+- API: `specs/api/notification/list.md`

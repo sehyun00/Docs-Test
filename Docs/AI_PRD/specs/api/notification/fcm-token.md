@@ -7,28 +7,32 @@ endpoint: /api/notifications/fcm-token
 auth: required
 related:
   db:
-    - ../../db/fcm-tokens.md
+    - specs/db/notification/device-tokens.md
 ---
 
 # POST /api/notifications/fcm-token
 
 ## 개요
+
 FCM 토큰 등록/갱신
 
 ## 스펙
 
 ### Request
+
 - **URL**: `/api/notifications/fcm-token`
 - **Method**: `POST`
 - **Auth**: Bearer Token 필수
 
 ### Headers
+
 ```
 Authorization: Bearer {access_token}
 Content-Type: application/json
 ```
 
 ### Body
+
 ```json
 {
   "token": "string (FCM 토큰)",
@@ -46,6 +50,7 @@ Content-Type: application/json
 ## Response
 
 ### 성공 (200)
+
 ```json
 {
   "registered": true,
@@ -54,6 +59,7 @@ Content-Type: application/json
 ```
 
 ### 에러
+
 | 코드 | 상황 | 메시지 |
 |------|------|--------|
 | 400 | 토큰 누락 | "FCM 토큰이 필요합니다" |
@@ -82,4 +88,5 @@ Content-Type: application/json
 ```
 
 ## 관련 스펙
-- DB: `../db/fcm-tokens.md`
+
+- DB: `specs/db/notification/device-tokens.md`

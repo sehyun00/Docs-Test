@@ -9,6 +9,7 @@ related:
   db:
     - specs/db/community/profiles.md
     - specs/db/community/settings.md
+    - specs/db/account/accounts.md
 ---
 
 # users 테이블

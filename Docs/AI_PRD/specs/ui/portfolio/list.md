@@ -4,15 +4,16 @@ phase: P1
 screen: 포트폴리오 목록 화면
 related:
   api:
-    - ../../api/portfolio/list.md
+    - specs/api/portfolio/list.md
   ui:
-    - detail.md
+    - specs/ui/portfolio/detail.md
 reference: ../../../reference/pages/home.md
 ---
 
 # 포트폴리오 목록 화면 (Portfolio List)
 
 ## 개요
+
 사용자 포트폴리오 목록 표시 및 관리
 
 ## 레이아웃
@@ -48,10 +49,12 @@ reference: ../../../reference/pages/home.md
 ## 컴포넌트
 
 ### 1. 헤더
+
 - 타이틀: "포트폴리오"
 - 추가 버튼 (➕): 새 포트폴리오 생성 모달
 
 ### 2. 포트폴리오 카드
+
 | 요소 | 설명 |
 |------|------|
 | 드래그 핸들 | ≡ (롱프레스로 순서 변경) |
@@ -61,6 +64,7 @@ reference: ../../../reference/pages/home.md
 | 수정일 | 상대 시간 |
 
 ### 3. 스와이프 액션
+
 - 왼쪽 스와이프: 수정 버튼
 - 오른쪽 스와이프: 삭제 버튼
 
@@ -85,6 +89,7 @@ reference: ../../../reference/pages/home.md
 | 5개 도달 | 추가 버튼 비활성화 |
 
 ## 관련 스펙
-- API: `../api/portfolio/list.md`
-- UI: `detail.md`
-- UI: `create.md`
+
+- API: `specs/api/portfolio/list.md`
+- UI: `specs/ui/portfolio/detail.md`
+- UI: `specs/ui/portfolio/create.md`

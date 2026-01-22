@@ -4,15 +4,16 @@ phase: P1
 screen: 리밸런싱 확인 화면
 related:
   api:
-    - ../../api/rebalancing/calculate.md
+    - specs/api/rebalancing/calculate.md
   ui:
-    - ../portfolio/detail.md
+    - specs/ui/portfolio/detail.md
 reference: ../../../reference/pages/rebalancing.md
 ---
 
 # 리밸런싱 확인 화면 (Rebalancing Check)
 
 ## 개요
+
 리밸런싱 필요 종목 확인 및 매수/매도 제안
 
 ## 레이아웃
@@ -62,12 +63,14 @@ reference: ../../../reference/pages/rebalancing.md
 ## 컴포넌트
 
 ### 1. 요약 카드
+
 | 요소 | 설명 |
 |------|------|
 | 총 평가금액 | 전체 포트폴리오 가치 |
 | 조정 필요 | 임계값 초과 종목 수 |
 
 ### 2. 임계값 선택
+
 | 옵션 | 설명 |
 |------|------|
 | 3% | 민감하게 조정 |
@@ -75,6 +78,7 @@ reference: ../../../reference/pages/rebalancing.md
 | 10% | 느슨하게 조정 |
 
 ### 3. 매수 필요 카드 (📈)
+
 | 요소 | 설명 |
 |------|------|
 | 종목명 | 종목 이름 |
@@ -83,12 +87,14 @@ reference: ../../../reference/pages/rebalancing.md
 | 제안 | 매수 N주 (약 ₩금액) |
 
 ### 4. 매도 필요 카드 (📉)
+
 | 요소 | 설명 |
 |------|------|
 | 괴리율 | 빨간색 양수 표시 |
 | 제안 | 매도 N주 (약 ₩금액) |
 
 ### 5. 균형 유지 섹션
+
 - 임계값 내 종목들
 - 접힘/펼침 가능
 
@@ -109,5 +115,6 @@ reference: ../../../reference/pages/rebalancing.md
 | 에러 | 에러 메시지 + 재시도 |
 
 ## 관련 스펙
-- API: `../api/rebalancing/calculate.md`
-- UI: `../portfolio/detail.md`
+
+- API: `specs/api/rebalancing/calculate.md`
+- UI: `specs/ui/portfolio/detail.md`
