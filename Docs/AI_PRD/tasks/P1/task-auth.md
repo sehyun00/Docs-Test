@@ -5,29 +5,30 @@ domain: auth
 status: not-started
 
 specs:
-  api:
-    - auth/auth-google.md
-    - auth/refresh.md
-    - auth/logout.md
-    - auth/profile-update.md
-    - auth/consents-get.md
-    - auth/consents-update.md
-    - auth/terms.md
-  db:
-    - auth/users.md
-    - auth/token-vault.md
-    - auth/user-consents.md
-    - auth/settings.md
-  ui:
-    - auth/login-screen.md
-    - auth/profile-input.md
+    api:
+        - auth/auth-google.md
+        - auth/refresh.md
+        - auth/logout.md
+        - auth/profile-update.md
+        - auth/consents-get.md
+        - auth/consents-update.md
+        - auth/terms.md
+    db:
+        - auth/users.md
+        - auth/token-vault.md
+        - auth/user-consents.md
+        - auth/settings.md
+        - auth/device-tokens.md
+    ui:
+        - auth/login-screen.md
+        - auth/profile-input.md
 
 tech:
-  backend: spring-boot
-  frontend: react-native
+    backend: spring-boot
+    frontend: react-native
 
 reference:
-  - pages/01_login.md
+    - pages/01_login.md
 ---
 
 # Task: 인증 기능 구현 (Google OAuth + JWT)
@@ -40,62 +41,62 @@ Google OAuth 2.0 로그인 + JWT 토큰 기반 인증 시스템 구현
 
 ### Backend (Spring Boot)
 
--   [ ] `AuthController` 생성
-    -   [ ] `POST /api/auth/google/callback` - Google OAuth 콜백
-    -   [ ] `POST /api/auth/refresh` - 토큰 갱신
-    -   [ ] `POST /api/auth/logout` - 로그아웃
--   [ ] `UserController` 생성
-    -   [ ] `PUT /api/users/profile` - 프로필 입력/수정
--   [ ] `AuthService` 생성
-    -   [ ] Google OAuth access_token 요청
-    -   [ ] Google 사용자 정보 조회
-    -   [ ] 신규/기존 사용자 처리
--   [ ] `JwtTokenProvider` 생성
-    -   [ ] Access Token 생성 (HS256, 1시간)
-    -   [ ] Refresh Token 생성 (14일)
-    -   [ ] 토큰 검증
-    -   [ ] 페이로드 추출
--   [ ] `User` 엔티티 생성
--   [ ] `UserRepository` 생성
--   [ ] `RefreshToken` 엔티티 생성
--   [ ] `RefreshTokenRepository` 생성
--   [ ] JWT 인증 필터 (`JwtAuthenticationFilter`)
--   [ ] Rate Limiting 설정 (10회/분 per IP)
+- [ ] `AuthController` 생성
+    - [ ] `POST /api/auth/google/callback` - Google OAuth 콜백
+    - [ ] `POST /api/auth/refresh` - 토큰 갱신
+    - [ ] `POST /api/auth/logout` - 로그아웃
+- [ ] `UserController` 생성
+    - [ ] `PUT /api/users/profile` - 프로필 입력/수정
+- [ ] `AuthService` 생성
+    - [ ] Google OAuth access_token 요청
+    - [ ] Google 사용자 정보 조회
+    - [ ] 신규/기존 사용자 처리
+- [ ] `JwtTokenProvider` 생성
+    - [ ] Access Token 생성 (HS256, 1시간)
+    - [ ] Refresh Token 생성 (14일)
+    - [ ] 토큰 검증
+    - [ ] 페이로드 추출
+- [ ] `User` 엔티티 생성
+- [ ] `UserRepository` 생성
+- [ ] `RefreshToken` 엔티티 생성
+- [ ] `RefreshTokenRepository` 생성
+- [ ] JWT 인증 필터 (`JwtAuthenticationFilter`)
+- [ ] Rate Limiting 설정 (10회/분 per IP)
 
 ### Frontend (React Native)
 
--   [ ] 로그인 화면 구현
-    -   [ ] 앱 로고 + 타이틀
-    -   [ ] Google 로그인 버튼
-    -   [ ] 약관 동의 문구 + 링크
--   [ ] 프로필 입력 화면 구현
-    -   [ ] 프로필 이미지 표시
-    -   [ ] 닉네임 입력 (글자수 카운트)
-    -   [ ] 시작하기 버튼
--   [ ] Google Sign-In 연동
-    -   [ ] `expo-auth-session` 또는 `react-native-google-signin`
--   [ ] 토큰 저장
-    -   [ ] `expo-secure-store` 사용
--   [ ] Axios 인터셉터 설정
-    -   [ ] 401 시 자동 토큰 갱신
-    -   [ ] 갱신 실패 시 로그아웃
--   [ ] 네비게이션 처리
-    -   [ ] 신규 사용자 → 프로필 입력
-    -   [ ] 기존 사용자 → 홈
+- [ ] 로그인 화면 구현
+    - [ ] 앱 로고 + 타이틀
+    - [ ] Google 로그인 버튼
+    - [ ] 약관 동의 문구 + 링크
+- [ ] 프로필 입력 화면 구현
+    - [ ] 프로필 이미지 표시
+    - [ ] 닉네임 입력 (글자수 카운트)
+    - [ ] 시작하기 버튼
+- [ ] Google Sign-In 연동
+    - [ ] `expo-auth-session` 또는 `react-native-google-signin`
+- [ ] 토큰 저장
+    - [ ] `expo-secure-store` 사용
+- [ ] Axios 인터셉터 설정
+    - [ ] 401 시 자동 토큰 갱신
+    - [ ] 갱신 실패 시 로그아웃
+- [ ] 네비게이션 처리
+    - [ ] 신규 사용자 → 프로필 입력
+    - [ ] 기존 사용자 → 홈
 
 ### Database
 
--   [ ] `users` 테이블 생성
--   [ ] `refresh_tokens` 테이블 생성
+- [ ] `users` 테이블 생성
+- [ ] `refresh_tokens` 테이블 생성
 
 ## 완료 조건
 
--   [ ] Google 로그인 버튼 클릭 → JWT 토큰 발급
--   [ ] 신규 사용자 → 프로필 입력 화면 → 홈
--   [ ] 기존 사용자 → 바로 홈
--   [ ] Access Token 만료 시 자동 갱신
--   [ ] 로그아웃 시 토큰 무효화
--   [ ] Secure Storage에 토큰 저장
+- [ ] Google 로그인 버튼 클릭 → JWT 토큰 발급
+- [ ] 신규 사용자 → 프로필 입력 화면 → 홈
+- [ ] 기존 사용자 → 바로 홈
+- [ ] Access Token 만료 시 자동 갱신
+- [ ] 로그아웃 시 토큰 무효화
+- [ ] Secure Storage에 토큰 저장
 
 ## 테스트 케이스
 

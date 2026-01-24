@@ -3,15 +3,16 @@ type: db
 phase: P1
 table: accounts
 related:
-  db:
-    - specs/db/auth/users.md
-    - specs/db/auth/token-vault.md
-    - specs/db/account/account-stock-entries.md
-    - specs/db/account/account-cash-entries.md
-  api:
-    - specs/api/account/list-create.md
-    - specs/api/account/update-delete.md
+    db:
+        - specs/db/auth/users.md
+        - specs/db/auth/token-vault.md
+        - specs/db/account/account-stock-entries.md
+        - specs/db/account/account-cash-entries.md
+    api:
+        - specs/api/account/list-create.md
+        - specs/api/account/update-delete.md
 ---
+
 # accounts 테이블
 
 ## 개요
@@ -32,12 +33,13 @@ CREATE TABLE accounts (
   user_id INTEGER NOT NULL,
   brokerage_name VARCHAR(50),
   account_number VARCHAR(255),
+  account_number_iv VARCHAR(255) NOT NULL,
   is_connected BOOLEAN DEFAULT FALSE,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   is_delete BOOLEAN DEFAULT FALSE,
   delete_at TIMESTAMP,
-  
+
   FOREIGN KEY (user_id) REFERENCES users(id),
   INDEX idx_accounts_user_id (user_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -45,17 +47,18 @@ CREATE TABLE accounts (
 
 ## 컬럼 상세
 
-| 컬럼           | 타입         | 필수 | 설명                      | Phase |
-| -------------- | ------------ | ---- | ------------------------- | ----- |
-| id             | INTEGER      | Y    | PK, AUTO_INCREMENT        | P1    |
-| user_id        | INTEGER      | Y    | FK → users.id            | P1    |
-| brokerage_name | VARCHAR(50)  | N    | 증권사 명                 | P1    |
-| account_number | VARCHAR(255) | N    | AES-256 암호화된 계좌번호 | P1    |
-| is_connected   | BOOLEAN      | Y    | 연결 상태                 | P1    |
-| created_at     | TIMESTAMP    | Y    | 생성일                    | P1    |
-| updated_at     | TIMESTAMP    | Y    | 수정일                    | P1    |
-| is_delete      | BOOLEAN      | Y    | 논리적 삭제               | P1    |
-| delete_at      | TIMESTAMP    | N    | 삭제 일시                 | P1    |
+| 컬럼              | 타입         | 필수 | 설명                      | Phase |
+| ----------------- | ------------ | ---- | ------------------------- | ----- |
+| id                | INTEGER      | Y    | PK, AUTO_INCREMENT        | P1    |
+| user_id           | INTEGER      | Y    | FK → users.id             | P1    |
+| brokerage_name    | VARCHAR(50)  | N    | 증권사 명                 | P1    |
+| account_number    | VARCHAR(255) | N    | AES-256 암호화된 계좌번호 | P1    |
+| account_number_iv | VARCHAR(255) | Y    | 복호화용 IV               | P1    |
+| is_connected      | BOOLEAN      | Y    | 연결 상태                 | P1    |
+| created_at        | TIMESTAMP    | Y    | 생성일                    | P1    |
+| updated_at        | TIMESTAMP    | Y    | 수정일                    | P1    |
+| is_delete         | BOOLEAN      | Y    | 논리적 삭제               | P1    |
+| delete_at         | TIMESTAMP    | N    | 삭제 일시                 | P1    |
 
 ## 관련 스펙
 

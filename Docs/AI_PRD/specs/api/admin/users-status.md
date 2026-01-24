@@ -7,7 +7,7 @@ endpoint: /api/admin/users/{id}/status
 auth: admin
 related:
     db:
-        - specs/db/admin/admin-logs.md
+        - specs/db/admin/audit-logs.md
         - specs/db/auth/users.md
 ---
 
@@ -77,7 +77,7 @@ related:
 4. users 테이블에서 id로 사용자 조회
 5. 사용자 없으면 404
 6. is_active 업데이트
-7. admin_logs 테이블에 기록:
+7. audit_logs 테이블에 기록:
    - action: 'STATUS_CHANGE'
    - target_type: 'USER'
    - target_id: {사용자 ID}
@@ -96,5 +96,5 @@ related:
 
 ## 관련 스펙
 
-- DB: `../db/admin-logs.md`
+- DB: `../db/audit-logs.md`
 - DB: `../db/users.md`

@@ -61,6 +61,7 @@ Table audit_logs {
   entity_id integer // 대상 레코드 ID
   old_value text // 변경 전 값 (JSON)
   new_value text // 변경 후 값 (JSON)
+  reason TEXT // 이유
   ip_address varchar // 접속 IP
   user_agent text // 앱/브라우저 정보
   created_at timestamp [default: `now()`]
@@ -116,7 +117,7 @@ Table portfolios {
 Table portfolio_stock_entries {
   id integer [primary key, increment]
   portfolio_id integer [not null, ref: > portfolios.id]
-  group varchar // 분류
+  group_name varchar // 분류
   ticker varchar [not null] // 주식 ticker
   target_weight decimal // 희망 비중(%)
   created_at timestamp // 생성 날짜
@@ -147,7 +148,7 @@ Table portfolio_cash_entries {
 }
 
 // 포트폴리오 개별 알림 설정
-Table portfolio_notification_settings {
+Table notification_settings {
   id integer [primary key, increment]
   portfolio_id integer [ref: - portfolios.id] // 포트폴리오와 1:1 관계
   is_enabled boolean [default: false]
@@ -180,7 +181,7 @@ Table accounts {
 Table account_stock_entries {
   id integer [primary key, increment]
   account_id integer [not null, ref: > accounts.id]
-  group varchar // 분류
+  group_name varchar // 분류
   ticker varchar [not null] // 주식 ticker
   current_quantity decimal // 현재 수량
   bought_price decimal // 평단가
@@ -500,7 +501,7 @@ Table community_copied_portfolio_cash_entries {
 Table community_copied_portfolio_stock_entries {
   id integer [primary key, increment]
   copied_portfolio_id integer [ref: > community_copied_portfolios.id]
-  group varchar // 분류
+  group_name varchar // 분류
   ticker varchar // 주식 ticker
   target_weight decimal // 희망 비중(%)
   created_at timestamp // 생성 날짜
