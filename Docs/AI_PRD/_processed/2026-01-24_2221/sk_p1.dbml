@@ -1,0 +1,25 @@
+// 사용자 정보
+Table users {
+  id integer [primary key, increment]
+  email varchar [not null] // 탈퇴 후 재가입자를 고려해 유니크 해제
+  provider enum ('GOOGLE', 'KAKAO', 'NAVER') // 소셜 제공자(현 구글)
+  role enum ('USER', 'ADMIN') // 사용자, 관리자
+  created_at timestamp // 가입 날짜
+  updated_at timestamp // 업데이트 날짜
+  membership_type enum ('FREE', 'PRO', 'EXPERT') // 멤버쉽 여부(free, pro, expert 같은 구분을 위해 enum 사용)
+  is_verified boolean // 본인인증 여부
+  last_login_at timestamp // 마지막 로그인 날짜
+  login_count integer // 로그인 횟수 - 비즈니스 로직 관련 테이블로 이동할 수 있음
+  is_suspended boolean [default: false] // 현재 정지 상태
+  suspended_until timestamp // 정지 해제 일시
+  is_delete boolean [default: false] // 논리적 삭제 여부
+  delete_at timestamp // 논리적 삭제 일시
+
+  Indexes {
+    email [unique, name: 'idx_users_email']
+    provider [name: 'idx_users_provider']
+  }
+}
+
+// ... (이 파일은 inbox에서 아카이브된 원본입니다)
+// 전체 내용은 TEST/DBML/sk_p1.dbml 참조

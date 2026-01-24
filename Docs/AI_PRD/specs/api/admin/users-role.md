@@ -7,7 +7,7 @@ endpoint: /api/admin/users/{id}/role
 auth: admin
 related:
     db:
-        - specs/db/admin/admin-logs.md
+        - specs/db/admin/audit-logs.md
     api:
         - specs/api/admin/users-detail.md
 ---
@@ -75,7 +75,7 @@ related:
 3. users 테이블에서 id로 사용자 조회
 4. 사용자 없으면 404
 5. role 업데이트
-6. admin_logs 테이블에 기록:
+6. audit_logs 테이블에 기록:
    - action: 'ROLE_CHANGE'
    - target_type: 'USER'
    - target_id: {사용자 ID}
@@ -86,5 +86,5 @@ related:
 
 ## 관련 스펙
 
-- DB: `../db/admin-logs.md`
+- DB: `../db/audit-logs.md`
 - API: `users-detail.md`

@@ -98,12 +98,13 @@ last_updated: 2026-01-24
 
 ### auth (인증)
 
-| 파일                                         | 테이블명        | 설명        | Phase |
-| -------------------------------------------- | --------------- | ----------- | :---: |
-| [users.md](db/auth/users.md)                 | `users`         | 사용자      |  P1   |
-| [user-consents.md](db/auth/user-consents.md) | `user_consents` | 사용자 동의 |  P1   |
-| [token-vault.md](db/auth/token-vault.md)     | `token_vault`   | 토큰 저장소 |  P1   |
-| [settings.md](db/auth/settings.md)           | `settings`      | 사용자 설정 |  P1   |
+| 파일                                         | 테이블명        | 설명          | Phase |
+| -------------------------------------------- | --------------- | ------------- | :---: |
+| [users.md](db/auth/users.md)                 | `users`         | 사용자        |  P1   |
+| [user-consents.md](db/auth/user-consents.md) | `user_consents` | 사용자 동의   |  P1   |
+| [token-vault.md](db/auth/token-vault.md)     | `token_vault`   | 토큰 저장소   |  P1   |
+| [settings.md](db/auth/settings.md)           | `settings`      | 사용자 설정   |  P1   |
+| [device-tokens.md](db/auth/device-tokens.md) | `device_tokens` | 디바이스 토큰 |  P1   |
 
 ### portfolio (포트폴리오)
 
@@ -125,12 +126,11 @@ last_updated: 2026-01-24
 
 ### notification (알림)
 
-| 파일                                                                 | 테이블명                | 설명          | Phase |
-| -------------------------------------------------------------------- | ----------------------- | ------------- | :---: |
-| [notifications.md](db/notification/notifications.md)                 | `notifications`         | 알림          |  P1   |
-| [notification-settings.md](db/notification/notification-settings.md) | `notification_settings` | 알림 설정     |  P1   |
-| [notification-types.md](db/notification/notification-types.md)       | `notification_types`    | 알림 유형     |  P1   |
-| [device-tokens.md](db/notification/device-tokens.md)                 | `device_tokens`         | 디바이스 토큰 |  P1   |
+| 파일                                                                 | 테이블명                | 설명      | Phase |
+| -------------------------------------------------------------------- | ----------------------- | --------- | :---: |
+| [notifications.md](db/notification/notifications.md)                 | `notifications`         | 알림      |  P1   |
+| [notification-settings.md](db/notification/notification-settings.md) | `notification_settings` | 알림 설정 |  P1   |
+| [notification-types.md](db/notification/notification-types.md)       | `notification_types`    | 알림 유형 |  P1   |
 
 ### community (커뮤니티)
 
@@ -157,11 +157,11 @@ last_updated: 2026-01-24
 
 ### admin (관리자)
 
-| 파일                                          | 테이블명        | 설명             | Phase |
-| --------------------------------------------- | --------------- | ---------------- | :---: |
-| [admin-logs.md](db/admin/admin-logs.md)       | `admin_logs`    | 관리자 활동 로그 |  P1   |
-| [announcements.md](db/admin/announcements.md) | `announcements` | 공지사항         |  P1   |
-| [error-logs.md](db/admin/error-logs.md)       | `error_logs`    | 에러 로그        |  P1   |
+| 파일                                          | 테이블명        | 설명      | Phase |
+| --------------------------------------------- | --------------- | --------- | :---: |
+| [audit-logs.md](db/admin/audit-logs.md)       | `audit_logs`    | 감사 로그 |  P1   |
+| [announcements.md](db/admin/announcements.md) | `announcements` | 공지사항  |  P1   |
+| [error-logs.md](db/admin/error-logs.md)       | `error_logs`    | 에러 로그 |  P1   |
 
 ### log (로그)
 
@@ -181,7 +181,7 @@ last_updated: 2026-01-24
 | 파일                                         | 화면             |
 | -------------------------------------------- | ---------------- |
 | [login-screen.md](ui/auth/login-screen.md)   | 로그인 화면      |
-| [splash.md](ui/auth/splash.md)               | 스플래시 화면     |
+| [splash.md](ui/auth/splash.md)               | 스플래시 화면    |
 | [profile-input.md](ui/auth/profile-input.md) | 프로필 입력 화면 |
 | [profile-edit.md](ui/auth/profile-edit.md)   | 프로필 편집 화면 |
 
@@ -201,17 +201,17 @@ last_updated: 2026-01-24
 
 ### 종목 - P1/P2
 
-| 파일                              | 화면           | Phase |
-| --------------------------------- | -------------- | :---: |
-| [add.md](ui/stock/add.md)         | 종목 추가 화면 |  P1   |
-| [search.md](ui/stock/search.md)   | 종목 검색 화면 |  P1   |
-| [detail.md](ui/stock/detail.md)   | 종목 상세 화면 |  P2   |
+| 파일                            | 화면           | Phase |
+| ------------------------------- | -------------- | :---: |
+| [add.md](ui/stock/add.md)       | 종목 추가 화면 |  P1   |
+| [search.md](ui/stock/search.md) | 종목 검색 화면 |  P1   |
+| [detail.md](ui/stock/detail.md) | 종목 상세 화면 |  P2   |
 
 ### 설정
 
-| 파일                                | 화면          |
-| ----------------------------------- | ------------- |
-| [main.md](ui/settings/main.md)      | 설정 메인 화면 |
+| 파일                           | 화면           |
+| ------------------------------ | -------------- |
+| [main.md](ui/settings/main.md) | 설정 메인 화면 |
 
 ### 커뮤니티 - P2/P3
 

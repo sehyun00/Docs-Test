@@ -6,8 +6,8 @@ method: POST
 endpoint: /api/notifications/fcm-token
 auth: required
 related:
-  db:
-    - specs/db/notification/device-tokens.md
+    db:
+        - specs/db/auth/device-tokens.md
 ---
 
 # POST /api/notifications/fcm-token
@@ -35,17 +35,17 @@ Content-Type: application/json
 
 ```json
 {
-  "token": "string (FCM 토큰)",
-  "deviceType": "IOS | ANDROID",
-  "deviceId": "string (선택)"
+    "token": "string (FCM 토큰)",
+    "deviceType": "IOS | ANDROID",
+    "deviceId": "string (선택)"
 }
 ```
 
-| 필드 | 타입 | 필수 | 설명 |
-|------|------|------|------|
-| token | string | Y | FCM 디바이스 토큰 |
-| deviceType | enum | Y | IOS 또는 ANDROID |
-| deviceId | string | N | 디바이스 고유 ID |
+| 필드       | 타입   | 필수 | 설명              |
+| ---------- | ------ | ---- | ----------------- |
+| token      | string | Y    | FCM 디바이스 토큰 |
+| deviceType | enum   | Y    | IOS 또는 ANDROID  |
+| deviceId   | string | N    | 디바이스 고유 ID  |
 
 ## Response
 
@@ -53,17 +53,17 @@ Content-Type: application/json
 
 ```json
 {
-  "registered": true,
-  "deviceType": "IOS"
+    "registered": true,
+    "deviceType": "IOS"
 }
 ```
 
 ### 에러
 
-| 코드 | 상황 | 메시지 |
-|------|------|--------|
-| 400 | 토큰 누락 | "FCM 토큰이 필요합니다" |
-| 401 | 인증 실패 | "로그인이 필요합니다" |
+| 코드 | 상황      | 메시지                  |
+| ---- | --------- | ----------------------- |
+| 400  | 토큰 누락 | "FCM 토큰이 필요합니다" |
+| 401  | 인증 실패 | "로그인이 필요합니다"   |
 
 ## 구현 로직
 
@@ -89,4 +89,4 @@ Content-Type: application/json
 
 ## 관련 스펙
 
-- DB: `specs/db/notification/device-tokens.md`
+- DB: `specs/db/auth/device-tokens.md`

@@ -3,13 +3,13 @@ type: db
 phase: P1
 table: portfolio_snapshots
 related:
-  db:
-    - specs/db/portfolio/portfolios.md
-  api:
-    - specs/api/portfolio/snapshots-list.md
-    - specs/api/portfolio/snapshots-detail.md
-    - specs/api/portfolio/snapshots-create.md
-    - specs/api/portfolio/snapshots-compare.md
+    db:
+        - specs/db/portfolio/portfolios.md
+    api:
+        - specs/api/portfolio/snapshots-list.md
+        - specs/api/portfolio/snapshots-detail.md
+        - specs/api/portfolio/snapshots-create.md
+        - specs/api/portfolio/snapshots-compare.md
 ---
 
 # portfolio_snapshots 테이블
@@ -30,12 +30,12 @@ CREATE TABLE portfolio_snapshots (
   profit_loss DECIMAL(18,2),
   profit_loss_rate DECIMAL(5,2),
   cash_ratio DECIMAL(5,2),
-  stock_entries JSON,
-  cash_entries JSON,
-  exchange_rates JSON,
+  stock_entries TEXT,
+  cash_entries TEXT,
+  exchange_rates TEXT,
   note TEXT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  
+
   FOREIGN KEY (portfolio_id) REFERENCES portfolios(id),
   INDEX idx_snapshots_portfolio_id (portfolio_id),
   INDEX idx_snapshots_created_at (created_at)
@@ -44,21 +44,21 @@ CREATE TABLE portfolio_snapshots (
 
 ## 컬럼 상세
 
-| 컬럼 | 타입 | 필수 | 설명 | Phase |
-|------|------|------|------|-------|
-| id | INTEGER | Y | PK, AUTO_INCREMENT | P1 |
-| portfolio_id | INTEGER | Y | FK → portfolios.id | P1 |
-| snapshot_type | ENUM | Y | MANUAL/AUTO/REBALANCE | P1 |
-| total_value | DECIMAL(18,2) | N | 총 평가금액 | P1 |
-| total_invested | DECIMAL(18,2) | N | 총 투자금액 | P1 |
-| profit_loss | DECIMAL(18,2) | N | 손익 | P1 |
-| profit_loss_rate | DECIMAL(5,2) | N | 수익률 | P1 |
-| cash_ratio | DECIMAL(5,2) | N | 현금 비율 | P1 |
-| stock_entries | JSON | N | 종목별 상태 | P1 |
-| cash_entries | JSON | N | 통화별 현금 | P1 |
-| exchange_rates | JSON | N | 환율 정보 | P1 |
-| note | TEXT | N | 메모 | P1 |
-| created_at | TIMESTAMP | Y | 스냅샷 일시 | P1 |
+| 컬럼             | 타입          | 필수 | 설명                  | Phase |
+| ---------------- | ------------- | ---- | --------------------- | ----- |
+| id               | INTEGER       | Y    | PK, AUTO_INCREMENT    | P1    |
+| portfolio_id     | INTEGER       | Y    | FK → portfolios.id    | P1    |
+| snapshot_type    | ENUM          | Y    | MANUAL/AUTO/REBALANCE | P1    |
+| total_value      | DECIMAL(18,2) | N    | 총 평가금액           | P1    |
+| total_invested   | DECIMAL(18,2) | N    | 총 투자금액           | P1    |
+| profit_loss      | DECIMAL(18,2) | N    | 손익                  | P1    |
+| profit_loss_rate | DECIMAL(5,2)  | N    | 수익률                | P1    |
+| cash_ratio       | DECIMAL(5,2)  | N    | 현금 비율             | P1    |
+| stock_entries    | TEXT (JSON)   | N    | 종목별 상태           | P1    |
+| cash_entries     | TEXT (JSON)   | N    | 통화별 현금           | P1    |
+| exchange_rates   | TEXT (JSON)   | N    | 환율 정보             | P1    |
+| note             | TEXT          | N    | 메모                  | P1    |
+| created_at       | TIMESTAMP     | Y    | 스냅샷 일시           | P1    |
 
 ## 관련 스펙
 
