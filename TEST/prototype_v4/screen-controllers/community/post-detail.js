@@ -2,9 +2,10 @@
  * Post Detail Screen Controller
  */
 
-// Mock Data
+// Mock Data - 일반 게시글
 const MOCK_POST = {
     id: 1,
+    type: 'post',
     category: '국내주식',
     title: '삼성전자, 지금 사도 될까요?',
     content: '안녕하세요. 최근 삼성전자 주가가 많이 올랐는데요. 지금 진입해도 괜찮을지 의견 부탁드립니다.\n\n현재 PER은 12배 수준이고, 반도체 업황이 회복세라는 분석이 많습니다.',
@@ -23,14 +24,48 @@ const MOCK_POST = {
     stockTags: ['삼성전자']
 };
 
+// Mock Data - 포트폴리오 게시글
+const MOCK_POST_PORTFOLIO = {
+    id: 10,
+    type: 'portfolio',
+    category: '포트폴리오',
+    title: '2024년 배당주 중심 포트폴리오',
+    content: '배당 수익률 4% 이상의 안정적인 종목들로 구성했습니다. 장기 투자 관점에서 꾸준한 배당 수익을 목표로 합니다.',
+    author: {
+        id: 'user2',
+        name: '배당러버',
+        followers: '5K',
+        isFollowing: false
+    },
+    date: '2월 5일',
+    isEdited: false,
+    likes: 156,
+    comments: 23,
+    reposts: 8,
+    isLiked: false,
+    stocks: [
+        { name: '삼성전자', ticker: '005930', targetRatio: 25, changeRate: 2.3 },
+        { name: 'SK하이닉스', ticker: '000660', targetRatio: 20, changeRate: -1.5 },
+        { name: 'NAVER', ticker: '035420', targetRatio: 15, changeRate: 0.8 },
+        { name: '카카오', ticker: '035720', targetRatio: 10, changeRate: -2.1 },
+        { name: 'LG에너지솔루션', ticker: '373220', targetRatio: 10, changeRate: 3.2 },
+        { name: '현대차', ticker: '005380', targetRatio: 10, changeRate: 1.1 },
+        { name: 'POSCO홀딩스', ticker: '005490', targetRatio: 5, changeRate: -0.5 },
+        { name: 'KB금융', ticker: '105560', targetRatio: 5, changeRate: 0.3 }
+    ]
+};
+
 const MOCK_COMMENTS = [
     { id: 1, author: '배당러버', time: '5분 전', text: '좋은 분석이네요! 저도 비슷한 생각입니다.', likes: 3 },
     { id: 2, author: '가치투자자', time: '10분 전', text: 'PER 기준으로는 아직 매력적인 구간 같아요', likes: 1 },
     { id: 3, author: '장기투자', time: '30분 전', text: '반도체 사이클 고려하면 좀 더 기다려도 될 것 같습니다', likes: 5 }
 ];
 
-let currentPost = MOCK_POST;
+// 테스트용: 포트폴리오 게시글 표시 (MOCK_POST 대신 MOCK_POST_PORTFOLIO 사용)
+let currentPost = MOCK_POST_PORTFOLIO;
 let comments = [...MOCK_COMMENTS];
+let currentSlideIndex = 0;
+const STOCKS_PER_SLIDE = 4;
 
 /**
  * Initialize
@@ -104,6 +139,7 @@ export function init() {
  * Start - called when screen becomes active
  */
 export function start() {
+    currentSlideIndex = 0;
     renderPost();
     renderComments();
 }
@@ -114,6 +150,7 @@ export function start() {
 export function reset() {
     const commentInput = document.getElementById('comment-input');
     if (commentInput) commentInput.value = '';
+    currentSlideIndex = 0;
 }
 
 /**
@@ -144,13 +181,122 @@ function renderPost() {
     // Like button state
     updateLikeButton(post.isLiked);
 
-    // Stock tags
-    const tagsContainer = document.getElementById('stock-tags');
-    if (tagsContainer && post.stockTags) {
-        tagsContainer.innerHTML = post.stockTags
-            .map(tag => `<span class="stock-tag">$${tag}</span>`)
-            .join('');
+    // 포트폴리오 타입인 경우 종목 카드 섹션 렌더링
+    if (post.type === 'portfolio' && post.stocks) {
+        renderPortfolioSection(post.stocks);
+        renderPortfolioTags(post.stocks);
+    } else {
+        // 일반 게시글 태그
+        const tagsContainer = document.getElementById('stock-tags');
+        if (tagsContainer && post.stockTags) {
+            tagsContainer.innerHTML = post.stockTags
+                .map(tag => `<span class="stock-tag">$${tag}</span>`)
+                .join('');
+        }
+        // 포트폴리오 섹션 숨기기
+        const portfolioSection = document.getElementById('portfolio-stocks-section');
+        if (portfolioSection) portfolioSection.style.display = 'none';
     }
+}
+
+/**
+ * 포트폴리오 종목 카드 섹션 렌더링
+ */
+function renderPortfolioSection(stocks) {
+    const section = document.getElementById('portfolio-stocks-section');
+    if (!section) return;
+
+    section.style.display = 'block';
+    const totalSlides = Math.ceil(stocks.length / STOCKS_PER_SLIDE);
+
+    // 현재 슬라이드의 종목들
+    const startIdx = currentSlideIndex * STOCKS_PER_SLIDE;
+    const slideStocks = stocks.slice(startIdx, startIdx + STOCKS_PER_SLIDE);
+
+    // 종목 리스트 렌더링
+    const stocksList = section.querySelector('.portfolio-stocks-list');
+    if (stocksList) {
+        stocksList.innerHTML = slideStocks.map(stock => `
+            <div class="portfolio-stock-row">
+                <div class="portfolio-stock-left">
+                    <span class="portfolio-stock-name">${stock.name}</span>
+                    <span class="portfolio-stock-ticker">${stock.ticker}</span>
+                </div>
+                <div class="portfolio-stock-right">
+                    <span class="portfolio-stock-change ${stock.changeRate >= 0 ? 'positive' : 'negative'}">
+                        ${stock.changeRate >= 0 ? '+' : ''}${stock.changeRate}%
+                    </span>
+                    <span class="portfolio-stock-ratio">${stock.targetRatio}%</span>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    // 페이지 인디케이터 렌더링
+    const dotsContainer = section.querySelector('.portfolio-page-dots');
+    if (dotsContainer && totalSlides > 1) {
+        dotsContainer.innerHTML = Array.from({ length: totalSlides }, (_, i) =>
+            `<span class="dot ${i === currentSlideIndex ? 'active' : ''}" data-index="${i}"></span>`
+        ).join('');
+
+        // 인디케이터 클릭 이벤트
+        dotsContainer.querySelectorAll('.dot').forEach(dot => {
+            dot.addEventListener('click', (e) => {
+                currentSlideIndex = parseInt(e.target.dataset.index);
+                renderPortfolioSection(stocks);
+            });
+        });
+    } else if (dotsContainer) {
+        dotsContainer.innerHTML = '';
+    }
+
+    // 스와이프 이벤트 설정
+    setupSwipeEvents(section, stocks, totalSlides);
+}
+
+/**
+ * 스와이프 이벤트 설정
+ */
+function setupSwipeEvents(section, stocks, totalSlides) {
+    const slideContainer = section.querySelector('.portfolio-stocks-list');
+    if (!slideContainer) return;
+
+    let startX = 0;
+    let isDragging = false;
+
+    slideContainer.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+        isDragging = true;
+    });
+
+    slideContainer.addEventListener('touchend', (e) => {
+        if (!isDragging) return;
+        const endX = e.changedTouches[0].clientX;
+        const diffX = startX - endX;
+
+        if (Math.abs(diffX) > 50) {
+            if (diffX > 0 && currentSlideIndex < totalSlides - 1) {
+                currentSlideIndex++;
+                renderPortfolioSection(stocks);
+            } else if (diffX < 0 && currentSlideIndex > 0) {
+                currentSlideIndex--;
+                renderPortfolioSection(stocks);
+            }
+        }
+        isDragging = false;
+    });
+}
+
+/**
+ * 포트폴리오 종목 태그 렌더링 (하단)
+ */
+function renderPortfolioTags(stocks) {
+    const tagsContainer = document.getElementById('stock-tags');
+    if (!tagsContainer) return;
+
+    tagsContainer.innerHTML = stocks
+        .map(stock => `<span class="stock-tag">$${stock.name}</span>`)
+        .join('');
 }
 
 /**

@@ -346,7 +346,7 @@
     right: 0;
     display: flex;
     padding: var(--spacing-sm) var(--community-gutter);
-    background-color: var(--bg-surface);
+    background-color: var(--bg-modal);
     border-top: 1px solid var(--border-color);
     gap: var(--spacing-sm);
     z-index: 10;
@@ -391,4 +391,118 @@
 #screen-community-post-detail .empty-state,
 #screen-community-post-detail .error-state {
     padding: var(--spacing-xl);
+}
+
+/* =============================================
+   PORTFOLIO STOCKS SECTION (카드 내 슬라이드)
+   ============================================= */
+#screen-community-post-detail .portfolio-stocks-section {
+    padding: var(--spacing-md) var(--community-gutter);
+}
+
+#screen-community-post-detail .portfolio-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-sm);
+    overflow: hidden;
+}
+
+#screen-community-post-detail .portfolio-card-header {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    margin-bottom: var(--spacing-xs);
+}
+
+#screen-community-post-detail .portfolio-stocks-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+/* 종목 행 (2줄 레이아웃) */
+#screen-community-post-detail .portfolio-stock-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px;
+    background: var(--bg-card);
+    border-radius: var(--radius-md);
+    transition: background-color 0.2s;
+}
+
+#screen-community-post-detail .portfolio-stock-row:hover {
+    background: var(--bg-surface-hover);
+}
+
+#screen-community-post-detail .portfolio-stock-left {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+#screen-community-post-detail .portfolio-stock-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+#screen-community-post-detail .portfolio-stock-ticker {
+    font-size: 11px;
+    color: var(--text-tertiary);
+}
+
+#screen-community-post-detail .portfolio-stock-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+}
+
+#screen-community-post-detail .portfolio-stock-change {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+#screen-community-post-detail .portfolio-stock-change.positive {
+    color: var(--success);
+}
+
+#screen-community-post-detail .portfolio-stock-change.negative {
+    color: var(--error);
+}
+
+#screen-community-post-detail .portfolio-stock-ratio {
+    font-size: 12px;
+    font-weight: 500;
+    color: #FFB74D;
+    /* 주황색 */
+}
+
+/* 페이지 인디케이터 */
+#screen-community-post-detail .portfolio-page-dots {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    padding: var(--spacing-sm) 0 var(--spacing-xs);
+}
+
+#screen-community-post-detail .portfolio-page-dots .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--border-color);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+#screen-community-post-detail .portfolio-page-dots .dot.active {
+    background: var(--primary);
+    transform: scale(1.2);
+}
+
+#screen-community-post-detail .portfolio-page-dots .dot:hover {
+    background: var(--text-tertiary);
 }
