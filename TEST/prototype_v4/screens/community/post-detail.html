@@ -25,6 +25,19 @@
 
         <!-- Scrollable Content -->
         <div class="post-content-area">
+            <!-- Portfolio Stocks Section (포트폴리오 타입일 때만 표시) -->
+            <div id="portfolio-stocks-section" class="portfolio-stocks-section" style="display: none;">
+                <div class="portfolio-card">
+                    <div class="portfolio-card-header">📊 포트폴리오 종목</div>
+                    <div class="portfolio-stocks-list">
+                        <!-- 종목 행이 JS로 렌더링됨 -->
+                    </div>
+                    <div class="portfolio-page-dots">
+                        <!-- 페이지 인디케이터가 JS로 렌더링됨 -->
+                    </div>
+                </div>
+            </div>
+
             <!-- Post Body -->
             <div class="post-body">
                 <h2 class="post-title" id="post-title">삼성전자, 지금 사도 될까요?</h2>
@@ -137,7 +150,7 @@
         <!-- Comment Input (Fixed Bottom) -->
         <div class="comment-input-area">
             <input type="text" class="comment-input" id="comment-input" placeholder="댓글을 입력하세요...">
-            <button class="comment-submit-btn" id="comment-submit-btn">⬆️</button>
+            <button class="comment-submit-btn" id="comment-submit-btn">➤</button>
         </div>
     </div>
 </div>
